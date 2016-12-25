@@ -13,15 +13,7 @@
 <head>
 	<title>Exploring the world</title>
 	<meta charset="utf-8"> 
-	<link rel="icon" href="assets/images/favicon.png">
-	<link rel="stylesheet" type="text/css" href="assets/style/erik.css">
-	<link rel="stylesheet" type="text/css" href="assets/style/bootstrap.css">	
-	<link rel="stylesheet" type="text/css" href="assets/style/buttons.css">	
-	<link rel="stylesheet" type="text/css" href="assets/style/trackpad-scroll-emulator.css">  
-	<link rel="stylesheet" href="assets/style/animate.css">
-	<script src="assets/js/jquery-1.11.3.js"></script>	
-	<script src="assets/js/jquery.trackpad-scroll-emulator.js"></script>
-	<script src="assets/js/bootstrap.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script>
 		// Default initializations
 		var lang = "eng";
@@ -36,34 +28,7 @@
 		var total_correct = 0;
 		var total_wrong = 0;
 		$(function() {
-			$.fn.extend({
-				animateCss: function (animationName) {
-					var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
-					$(this).addClass('animated ' + animationName).one(animationEnd, function() {
-						$(this).removeClass('animated ' + animationName);
-					});
-				}
-			});
 
-			// Default language is ENG
-			var url = window.location.href;     // Returns full URL
-			var lang = (getParameterByName("lang") == null) ? "eng" : getParameterByName("lang");
-			loadLang(lang);
-			$('#about').hide();
-			$('#home-body').hide();
-			$('#interests').hide();
-			$('#contact-body').hide();			
-			displaySection('home');
-			var new_height  = $(window).height();
-			console.log(new_height);
-			$('.wrapper').height(new_height - 70);		
-			$('.wrapper').width($('#bin').width());
-			$('.wrapper').TrackpadScrollEmulator();
-			var wind_width = $(window).width();
-			var txt_width = -$('.bottom').width() / 2;
-			$('.bottom').css('margin-left', txt_width);
-			
-			
 			// Event bindings
 			$('.lang-btn').on('click', function () {
 				lang = $(this).attr('id');
@@ -245,135 +210,6 @@
 			$('#vocab_word').html(vocab[quiz_idx].word);		
 		}
 		
-		function displaySection(id) {
-			var section = 	(id == 'home') 		? '#home-body' :
-							(id == 'abt') 		? '#about' :
-							(id == 'hobbies') 	? '#interests' :
-							(id == 'prj')		? '#projects' : '#contact-body';
-			$('.desc-txt').not(section).hide();
-			$(section).show();
-			$(section).animateCss('fadeInRight');	
-		}
-		
-		
-		function loadLang(lang) {
-			if (lang == "eng") {
-				// Header buttons
-				$('#home').html('Home');
-				$('#abt').html('About me');
-				$('#hobbies').html('Interests');
-				$('#prj').html('Projects');
-				$('#contact').html('Contact me');
-				$('#blog').html('Blog');
-				
-				// Home
-				$('#home-body').html('\
-					Welcome to my website. My name is Erik and I live in Michigan.'
-				);
-				
-				// About me 
-				$('#about').html('\
-								Hi! My name is Erik. On a professional level, I am a computer engineer currently working in Michigan.\
-				When I\'m not working though, you can generally find me tinkering with hardware/software, learning languages\
-				playing sports, or playing League of Legends or Counterstrike.\
-				<br><br>\
-				You\'ll be able to learn more about my personal engineering adventures on my projects page and blog. As far\
-				as sports go, I am a massive Cincinnati Bengals fan, though I enjoy playing soccer and tennis the most.\
-				<br><br>\
-				I am passionate about learning languages and cultures, thus, it\'s not rare for me to spend my free time studying language.\
-				I currently speak 4 languages (see the flags on the upper right), and am now working on a fifth (Vietnamese). For non-technical\
-				posts, you can check many posts from my blog :).\
-				<br><br>\
-				As far as gaming goes, feel free to add me. I\'m Hygger Mig on league (NA), and silvrblade on steam.'
-				);
-				
-				// Interests
-				$('#interests').html('\
-					<h3>My interests</h3>\
-					I enjoy optimization, scripting, and working on the full-stack.'
-				);
-				
-				// Contact me
-				$('#contact-body').html('\
-					<h3>reach me at any of the below methods</h3>\
-					email: egmeade@live.com<br>\
-					wechat: erikjunnan<br>\
-					phone number/whatsapp: +1 (908) 963-3550.<br>'
-				);
-				
-			}
-			else if (lang == "dk") {
-				// Header buttons
-				$('#home').html('Hjem');
-				$('#abt').html('Om mig');
-				$('#hobbies').html('Interesser');
-				$('#prj').html('Projekter');
-				$('#contact').html('Kontakt mig');
-				$('#blog').html('Blog');
-				
-				$('#about').html('\
-					Hej, jeg hedder Erik. Jeg er computer ingeniør der arbejder i Michigan, USA. Når jeg arbejder ikke, så spille jeg med\
-					hardware og software, lære sprog, spille sport, eller spille LoL og CS:GO. \
-					<br><br>\
-					Du kan lære mere om min personligt liv på min blog. Jeg er en kampestort Cincinnati Bengals fan, men jeg kan meste god lige\
-					spille fodbold og tennis. \
-					<br><br>\
-					Jeg er meget interreset om lære sprog og kulturer, så i mit fritid, jeg oftenlig lærer sprog.\
-					Lige nu snakker jeg 4 sprog (engelsk, dansk, kinesisk og fransk), lige nu så studerer jeg Vietnamiensk. \
-					Hvis du vil gerne se mine poster om sprog, så skal du se min blog!\
-					<br><br>\
-					Hvis du vil gerne tilføj mig på League of Legends, jeg er Hygger Mig, på steam er jeg silvrblade.'
-				);
-			}
-			else if (lang == "cn") {
-				// Header buttons
-				$('#home').html('首页');
-				$('#abt').html('自我介绍');
-				$('#hobbies').html('兴趣');
-				$('#prj').html('工程');
-				$('#contact').html('联系我');
-
-				$('#blog').html('博客');	
-				
-				// About me 
-				$('#about').html('\
-				你好！ 我叫Erik。在事业上面，我是一个住在密歇根的计算机工程师。我不工作时，\
-				我一般玩硬件软件，学习语言，打球，还是打电子游戏。\
-				<br><br>\
-				你要是想更关注我的个人事，你关注一下我的博客或工程页。在体育方面，我是一个特别热情的Bengals（橄榄球）粉丝，我\
-				最喜欢打网球或踢足球。\
-				<br><br>\
-				我对学习语言和文化特别有兴趣，所以我有空时，常常会留在学习语言上。我现在会说四门语言（英语，丹麦语，法语，中文），然后我现在\
-				在学习越南语中。我关于语言的文章都会留在我博客上。\
-				<br><br>\
-				如果你想陪我打游戏，我英雄联盟（北美）的号是hygger mig，（卡拉曼达）：鬼鬼祟祟狐，steam上我是silvrblade.'
-				);
-			}
-			else if (lang == "fr") {
-				// Header buttons
-				$('#home').html('Accueil');
-				$('#abt').html('Qui suis-je?');
-				$('#hobbies').html('Intérêts');
-				$('#prj').html('Projets');
-				$('#contact').html('Me contacter');
-				$('#blog').html('Blog');
-				
-				// About me
-				$('#about').html('\
-				Salut! Je m\'appelle Erik. J\'habite en Michigan et je faire l\'informatique pour le travail. Quand je ne travaille pas, j\'aime\
-				jouer avec le software/hardware, étudier les langues, jouer au sport, et jouer au jeux video (LoL et CS:GO).\
-				<br><br>\
-				On peut plus suiver moi sur mon blog, là je vais publiquer plusieurs evenements de mon vie personnel. L\'equipe football\
-				americaine que j\'aime le plus est le Cincinnati Bengals! Mais alors, si c\'est moi qui joue, j\'aime jouer au foot et au basket.\
-				<br><br>\
-				Apprendre les langues est une façon de ma vie à laquelle je suis très passioné. Je maintenant est en train d\'apprendre le\
-				vietnamien. \
-				<br><br>\
-				Si tu veux m\'ajouter dans la realme éléctronique, je m\'appelle hygger mig sur LoL, et silvrblade sur steam. Merci pour voir\
-				ma page personnelle'
-				);
-			}
-		}
 		
 		function getParameterByName(name) {
 			var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
@@ -382,75 +218,33 @@
 	</script>
 </head>
 <body class="body">	
-	<div class="top-bar">
-		<div class="row header-btn" id="sections">
-			<span class="main-btn" id="home">Home</span>
-			<span class="main-btn" id="abt">About me</span>
-			<span class="main-btn" id="hobbies">Interests</span>
-			<span class="main-btn" id="prj">Projects</span>
-			<span class="main-btn" id="contact">Contact me</span>
-			<a href="/blog" class="main-btn" id="blog">Blog</a>
-		</div>		
-		<div class="lang-btns">
-			<a class="image-link" href="?lang=eng"> 
-				<img id="eng" class="lang-btn" src="assets/images/United-Kingdom.png">
-			</a>
-			<a class="image-link" href="?lang=cn"> 
-				<img id="cn" class="lang-btn" src="assets/images/China.png">
-			</a>
-			<a class="image-link" href="?lang=dk"> 
-				<img id="dk" class="lang-btn" src="assets/images/Denmark.png">
-			</a>
-			<a class="image-link" href="?lang=fr"> 
-				<img id="fr" class="lang-btn" src="assets/images/France.png">
-			</a>
+	<h2>Vocab Trainer</h2>
+	<div id="load_field">
+		<input id="vocab_file" type="file">
+	</div>
+	<div id="testing_field">
+		<p id="vocab_word"></p>
+		<label for="vocab_answer"style="color: blue; display: block;">Enter answer: <input type="text" id="vocab_answer"></label>
+		<p id="correct"></p>
+		<button class="vocab-button" id="start_stop">Start</button>
+		<button class="vocab-button" id="switch">Switch</button>
+		<button class="vocab-button" id="remove_curr_word">Remove current word</button>
+		<button class="vocab-button" id="remove_word">Remove previous word</button>
+		<div style="display: block; margin-top: 20px; margin-bottom: 20px;">
+			<input type="checkbox" checked="true" id="auto-removal" style="margin-right: 10px; height: 20px; width: 20px;"><span style="color: blue;">Automatically remove word after <input type="number" value=3 id="cons-correct"> consecutive correct answers</span>
 		</div>
+		<div class="col-md-6" style="text-align: center;">Correct: <span style="color: green;" id="num_correct">0</span></div>
+		<div class="col-md-6" style="text-align: center;">Incorrect: <span id="num_incorrect" style="color: red;">0</span></div>
 	</div>
-	<div id="left-section">
-	</div>
-	<div id="middle-section">
-		<div id="middle" style="display: inline-block; margin-top: 15px;">
-			<div class="desc-txt" id="home-body">
-			</div>
-			<div class="desc-txt" id="about">
-			</div>
-			<div class="desc-txt" id="interests">
-			</div>
-			<div class="desc-txt" id="projects">
-				<h2>Vocab Trainer</h2>
-				<div id="load_field">
-					<input id="vocab_file" type="file">
-				</div>
-				<div id="testing_field">
-					<p id="vocab_word"></p>
-					<label for="vocab_answer"style="color: blue; display: block;">Enter answer: <input type="text" id="vocab_answer"></label>
-					<p id="correct"></p>
-					<button class="vocab-button" id="start_stop">Start</button>
-					<button class="vocab-button" id="switch">Switch</button>
-					<button class="vocab-button" id="remove_curr_word">Remove current word</button>
-					<button class="vocab-button" id="remove_word">Remove previous word</button>
-					<div style="display: block; margin-top: 20px; margin-bottom: 20px;">
-						<input type="checkbox" checked="true" id="auto-removal" style="margin-right: 10px; height: 20px; width: 20px;"><span style="color: blue;">Automatically remove word after <input type="number" value=3 id="cons-correct"> consecutive correct answers</span>
-					</div>
-					<div class="col-md-6" style="text-align: center;">Correct: <span style="color: green;" id="num_correct">0</span></div>
-					<div class="col-md-6" style="text-align: center;">Incorrect: <span id="num_incorrect" style="color: red;">0</span></div>
-				</div>
-				
-				<div id="vocab_read_me" style="text-align: left;">
-					<br><br><h3>README</h3>
-					Load a text file of the vocabulary you want to learn. <br><br><strong style="font-size: 30px;">Format</strong><br> If your list in English-French, one column would
-					be English vocab, and the other would be French. You can separate columns with a tab or multiple spaces.
-					<br>
-					Once the file is loaded, press start, and begin quizzing. Everything other function is fairly self-explanatory.
-					<br>
-					If there are any issues, please write to egmeade@live.com and let me know.
-				</div>
-			</div>
-			<div class="desc-txt" id="contact-body">			
-			</div>
-		</div>
-	</div>
-	<div id="right-section">		
+	
+	<div id="vocab_read_me" style="text-align: left;">
+		<br><br><h3>README</h3>
+		Load a text file of the vocabulary you want to learn. <br><br><strong style="font-size: 30px;">Format</strong><br> If your list in English-French, one column would
+		be English vocab, and the other would be French. You can separate columns with a tab or multiple spaces.
+		<br>
+		Once the file is loaded, press start, and begin quizzing. Everything other function is fairly self-explanatory.
+		<br>
+		If there are any issues, please write to egmeade@live.com and let me know.
 	</div>
 </body>
 </html>

@@ -14,6 +14,7 @@
 	<title>Exploring the world</title>
 	<meta charset="utf-8"> 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="assets/style.css	">
 	<script>
 		// Default initializations
 		var lang = "eng";
@@ -193,7 +194,65 @@
 				console.log(num_correct_clear);			
 			})
 			
+			$('#uk').on('click', function() {
+				$('#title').html('Vocab Trainer');
+				$('#enter_answer').html('Enter answer:');
+				$('#start_stop').html('Start');
+				$('#switch').html('Switch');
+				$('#remove_curr_word').html('Remove current word');
+				$('#remove_word').html('Remove previous word');
+				$('#auto_text').html('Automatically remove word after <input type="number" value=3 id="cons-correct"> consecutive correct answers');
+				$('#tr_corr').html('Correct: ');
+				$('#tr_incorr').html('Incorrect: ');
+				$('#README').html('README');
+				$('#README_DESC').html('Load a text file of the vocabulary you want to learn.');
+				$('#FORMAT').html('FORMAT');
+				$('#FORMAT_DESC').html('\
+					If your list in English-French, one column would\
+					be English vocab, and the other would be French. You can separate columns with a tab or multiple spaces.\
+					<br>\
+					For example, a file would have a look similar to the following:<br>\
+					<div id="example">\
+						聪明  smart<br>\
+						路    road<br>\
+						我    I<br>\
+						去    to go<br>\
+					</div>\
+					<br>\
+					Once the file is loaded, press start, and begin quizzing. Everything other function is fairly self-explanatory.\
+					<br>\
+					If there are any issues, please write to egmeade@live.com and let me know.\
+				');
+			
+			});
+			$('#china').on('click', function() {
+				$('#title').html('单词复习');
+				$('#enter_answer').html('输入答案：');
+				$('#start_stop').html('开始');
+				$('#switch').html('转换');
+				$('#remove_curr_word').html('消除本词');
+				$('#remove_word').html('消除前词');
+				$('#auto_text').html('<input type="number" value=3 id="cons-correct"> 次正确就消除单词');
+				$('#tr_corr').html('正确：');
+				$('#tr_incorr').html('不对：');
+				$('#README').html('相关信息');
+				$('#README_DESC').html('请上传你想复习的生词表');
+				$('#FORMAT').html('文件格式');
+				$('#FORMAT_DESC').html('\
+					列子：如果你想练习中英单词，文件里左边可以当中文的词儿，右边是英文相当的词儿\
+					两个纵队之间需要放个tab或许两个空格以上。<br>比如说一个符合上面的要求的文件会像下面的打出来的：<br>\
+<div id="example">\
+聪明  smart<br>\
+路    road<br>\
+我    I<br>\
+去    to go<br>\
+</div><br>\
+文件上载了之后，按开始钮就可以开始复习。其他的功能都不说子明<br>如果有问题的话请联系egmeade@live.com。');
+			});
+			
 		});
+	
+		
 
 		function refreshCardStack() {
 		
@@ -218,34 +277,54 @@
 	</script>
 </head>
 <body class="body">	
-	<h2>Vocab Trainer</h2>
-	<div id="load_field">
-		<input id="vocab_file" type="file">
+	<div id="yuyan">
+		<img id="uk" src="assets/uk.png">
+		<img id="china" src="assets/china.png">
 	</div>
-	<div id="testing_field">
-		<p id="vocab_word"></p>
-		<label for="vocab_answer"style="color: blue; display: block;">Enter answer: <input type="text" id="vocab_answer"></label>
-		<p id="correct"></p>
-		<button class="vocab-button" id="start_stop">Start</button>
-		<button class="vocab-button" id="switch">Switch</button>
-		<button class="vocab-button" id="remove_curr_word">Remove current word</button>
-		<button class="vocab-button" id="remove_word">Remove previous word</button>
-		<div style="display: block; margin-top: 20px; margin-bottom: 20px;">
-			<input type="checkbox" checked="true" id="auto-removal" style="margin-right: 10px; height: 20px; width: 20px;"><span style="color: blue;">Automatically remove word after <input type="number" value=3 id="cons-correct"> consecutive correct answers</span>
+	<div id="training-tool">
+		<h2 id="title">Vocab Trainer</h2>
+		<div id="load_field">
+			<input id="vocab_file" type="file">
 		</div>
-		<div class="col-md-6" style="text-align: center;">Correct: <span style="color: green;" id="num_correct">0</span></div>
-		<div class="col-md-6" style="text-align: center;">Incorrect: <span id="num_incorrect" style="color: red;">0</span></div>
+		<div id="testing_field">
+			<p id="vocab_word"></p>
+			<label for="vocab_answer"style="color: blue; display: block; font-size: 20px;"><span id="enter_answer">Enter answer:</span><input type="text" id="vocab_answer"</label>
+			<p id="correct"></p>
+			<button class="vocab-button" id="start_stop">Start</button>
+			<button class="vocab-button" id="switch">Switch</button>
+			<button class="vocab-button" id="remove_curr_word">Remove current word</button>
+			<button class="vocab-button" id="remove_word">Remove previous word</button>
+			<div style="display: block; margin-top: 20px; margin-bottom: 20px;">
+				<input type="checkbox" checked="true" id="auto-removal" style="margin-right: 10px; height: 20px; width: 20px;">
+				<span id="auto_text" style="font-size: 20px; color: blue;">Automatically remove word after <input type="number" value=3 id="cons-correct"> consecutive correct answers</span>
+			</div>
+			<div class="col-md-6" style="text-align: center; font-size: 24px; color: blue;"><span id="tr_corr">Correct: </span><span style="color: green;" id="num_correct">0</span></div>
+			<div class="col-md-6" style="text-align: center; font-size: 24px; color: blue;"><span id="tr_incorr">Incorrect: </span><span id="num_incorrect" style="color: red;">0</span></div>
+		</div>
+		
+		<div id="vocab_read_me">
+			<br><br><h3 id="README">README</h3>
+			<p id="README_DESC">
+			Load a text file of the vocabulary you want to learn. 
+			</p>
+			<h3 id="FORMAT">FORMAT</h3> 
+			<div id="FORMAT_DESC">
+			If your list in English-French, one column would
+			be English vocab, and the other would be French. You can separate columns with a tab or multiple spaces.
+			<br>
+			For example, a file would have a look similar to the following:<br>
+			<div id="example">
+聪明  smart<br>
+路    road<br>
+我    I<br>
+去    to go<br>
+</div>
+			<br>
+			Once the file is loaded, press start, and begin quizzing. Everything other function is fairly self-explanatory.
+			<br>
+			If there are any issues, please write to egmeade@live.com and let me know.
+			</div>
+		</div>
 	</div>
-	
-	<div id="vocab_read_me" style="text-align: left;">
-		<br><br><h3>README</h3>
-		Load a text file of the vocabulary you want to learn. <br><br><strong style="font-size: 30px;">Format</strong><br> If your list in English-French, one column would
-		be English vocab, and the other would be French. You can separate columns with a tab or multiple spaces.
-		<br>
-		Once the file is loaded, press start, and begin quizzing. Everything other function is fairly self-explanatory.
-		<br>
-		If there are any issues, please write to egmeade@live.com and let me know.
-	</div>
-	<p> Note: This page currently serves as a way for me to practice vocabulary, after I am done learning I will revert to a biographical page.</p>
 </body>
 </html>

@@ -92,16 +92,23 @@
 			});
 			
 			$('#start_stop').on('click', function() {
-				var status = $('#start_stop').html() == 'Start' ? true : false;
+				var status = $('#start_stop').html() == 'Start' || '开始' ? true : false;
 				if (status) {
 					if (vocab.length) {
 						newWord();
-						$('#start_stop').html('Stop');
+						if (lang == "eng")
+							$('#start_stop').html('Stop');
+						else
+							$('#start_stop').html('停止');
+
 					}
 					else {
 						if (f) {
 							r.readAsText(f);
-							$('#start_stop').html('Stop');
+							if (lang == "eng")
+								$('#start_stop').html('Stop');
+							else
+								$('#start_stop').html('停止');
 							setTimeout(newWord(), 2000);
 						}
 						else {
@@ -113,7 +120,10 @@
 				else {
 					$('#vocab_word').html('');
 					$('#correct').html('');
-					$('#start_stop').html('Start');
+						if (lang == "eng")
+							$('#start_stop').html('Start');
+						else
+							$('#start_stop').html('开始');
 				}
 			});
 			
@@ -148,7 +158,10 @@
 						return;
 					}
 					if ($(this).val().toUpperCase() == vocab[quiz_idx].word2.toUpperCase()) {
-						$('#correct').html('Correct!');
+						if (lang == "eng")
+							$('#correct').html('Correct!');
+						else
+							$('#correct').html('正确！');
 						$('#correct').css('color', 'green');
 						vocab[quiz_idx].correct += 1;
 						if (vocab[quiz_idx].correct >= num_correct_clear && clear_words) {
@@ -159,7 +172,10 @@
 						$('#num_correct').html(total_correct);
 					}
 					else {
-						$('#correct').html('Sorry ' + vocab[quiz_idx].word + ' is ' + vocab[quiz_idx].word2);
+						if (lang == "eng")
+							$('#correct').html('Sorry ' + vocab[quiz_idx].word + ' is ' + vocab[quiz_idx].word2);
+						else
+							$('#correct').html('不对，' + vocab[quiz_idx].word + '相等' + vocab[quiz_idx].word2);
 						$('#correct').css('color', 'red');
 						vocab[quiz_idx].correct = 0;
 						
@@ -195,6 +211,7 @@
 			})
 			
 			$('#uk').on('click', function() {
+				lang="eng"
 				$('#title').html('Vocab Trainer');
 				$('#enter_answer').html('Enter answer:');
 				$('#start_stop').html('Start');
@@ -226,6 +243,7 @@
 			
 			});
 			$('#china').on('click', function() {
+				lang="cn"
 				$('#title').html('单词复习');
 				$('#enter_answer').html('输入答案：');
 				$('#start_stop').html('开始');

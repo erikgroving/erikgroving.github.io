@@ -22,15 +22,45 @@
 		var getPix = /\d+/;
 		var step = 1;
 
+		var home_page = 1;
+		
+		// About hitbox
+		var abt_left;
+		var abt_width;
+		var abt_top;
+		var abt_height;		
+		// Back hitbox
+		var back_left;
+		var back_width;
+		var back_top;
+		var back_height;
+		// Vocab hitbox
+		var voc_left;
+		var voc_width;
+		var voc_top;
+		var voc_height;
+		// Contact hitbox
+		var con_left;
+		var con_width;
+		var con_top;
+		var con_height;
+		
+		
+		
 		$(function() {
+
+			recalcHitBoxes();
+			
+			console.log($('#about').css('left'));
+			console.log($('#about').css('top'));
+			console.log($('#about').css('right'));
+			console.log($('#about').css('bottom'));
 			var keys = {}
 			// Event bindings
 			$(document).keydown(function(e) {
-				console.log('');
 				step = parseFloat($( document ).width()) / 250;
 				if (e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 39 || e.keyCode == 40) {
 					e.preventDefault();
-					console.log(move_ball);
 					if (!move_ball) {
 						moveBall();
 						move_ball = setInterval(moveBall, 5);
@@ -44,24 +74,33 @@
 			$(document).keyup(function(e) {   
 				keys[e.keyCode] = false;
 			});
+
 			
 			$('#about').on('click', function() {
+				home_page = 0;
 				$('#home-page').addClass('hidden');
 				$('#back').removeClass('hidden');
 				$('#about-div').removeClass('hidden');
+				recalcHitBoxes()
+
 			});
 			
 			$('#contact').on('click', function() {
+				home_page = 0;
 				$('#home-page').addClass('hidden');
 				$('#back').removeClass('hidden');
-				$('#contact-div').removeClass('hidden');			
+				$('#contact-div').removeClass('hidden');
+				recalcHitBoxes()
 			});
 			
 			$('#back').on('click', function() {
+				home_page = 1;
 				$('#home-page').removeClass('hidden');
 				$('#back').addClass('hidden');
 				$('#about-div').addClass('hidden');
 				$('#contact-div').addClass('hidden');
+				recalcHitBoxes()
+
 			});
 			
 			$('#vocab_tool').on('click', function() {
@@ -69,9 +108,10 @@
 			});
 			
 			function moveBall() {
-				console.log('tagged');
 				var left = $('#ball').css('left');
 				var top = $('#ball').css('top');
+				var wheight = $(document).height();
+				var wwidth = $(document).width();
 				left = parseFloat(left.match(getPix));
 				top = parseFloat(top.match(getPix));
 				if (keys[37]) {
@@ -86,13 +126,16 @@
 				if (keys[40]) {
 					top = top + step;
 				}
+				if (left > wwidth - 75)
+					left = wwidth - 75;
+				if (top > wheight - 75)
+					top = wheight - 75;
+					
 				left = left + 'px';
 				top = top + 'px';
 				$('#ball').css('top', top);
 				$('#ball').css('left', left);
-				console.log(keys[37] + ' ' + keys[38] + ' ' + keys[39] + ' ' + keys[40]);
 				if (!(keys[37] || keys[38] || keys[39] || keys[40])) {
-					console.log('interval was cleared');
 					clearInterval(move_ball);
 					move_ball = 0;
 				}
@@ -100,8 +143,72 @@
 			}
 
 			function checkBall() {
+				var left = $('#ball').css('left');
+				var top = $('#ball').css('top');
+				left = parseFloat(left.match(getPix));
+				top = parseFloat(top.match(getPix));
 				
-			}			
+				// Check for about hit
+				if (left > abt_left && left < abt_left + abt_width && home_page) {
+					if (top > abt_top && top < abt_top + abt_height) {
+						$('#about').click();
+					}
+				}
+				// Check for back hit
+				if (left > back_left && left < back_left + back_width && !home_page) {
+					if (top > back_top && top < back_top + back_height) {
+						$('#back').click();
+					}
+				}
+				
+				// Check for vocab hit
+				if (left > voc_left && left < voc_left + voc_width && home_page) {
+					if (top > voc_top && top < voc_top + voc_height) {
+						$('#vocab_tool').click();
+					}
+				}				
+				
+				// Check for contact hit
+				if (left > con_left && left < con_left + con_width && home_page) {
+					if (top > con_top && top < con_top + con_height) {
+						$('#contact').click();
+					}
+				}
+				
+				//console.log('left: ' + left + ' top: ' + top);
+			}
+
+			function recalcHitBoxes() {
+				// About hit box
+				abt_left = parseFloat($('#about').css('left')) - 55;
+				abt_width = parseFloat($('#about').width()) + 70;
+				abt_top = parseFloat($('#about').css('top')) - 70;
+				abt_height = parseFloat($('#about').height()) + 70;
+				// Back hit box
+				back_left = parseFloat($('#back').css('left')) - 25;
+				back_width = parseFloat($('#back').width()) + 70;
+				back_top = parseFloat($('#back').css('top')) - 55;
+				back_height = parseFloat($('#back').height()) + 90;
+				// Vocab hit box
+				voc_left = parseFloat($('#vocab_tool').css('left')) - 25;
+				voc_width = parseFloat($('#vocab_tool').width()) + 70;
+				voc_top = parseFloat($('#vocab_tool').css('top')) - 55;
+				voc_height = parseFloat($('#vocab_tool').height()) + 90;
+				// Contact hit box
+				con_left = parseFloat($('#contact').css('left')) - 25;
+				con_width = parseFloat($('#contact').width()) + 70;
+				con_top = parseFloat($('#contact').css('top')) - 55;
+				con_height = parseFloat($('#contact').height()) + 90;
+				
+				
+				
+				
+				console.log('abt_left ' + abt_left + ' abt_top ' + abt_top);
+				console.log('abt_width ' + abt_width + ' abt_height ' + abt_height);
+
+				console.log('back_left ' + back_left + ' back_top ' + back_top);
+				console.log('back_width ' + back_width + ' back_height ' + back_height);
+			}
 		});
 		
 		function getParameterByName(name) {
@@ -122,11 +229,11 @@
 			Use the arrow keys to move 
 			the ball around to go where you want to go. 
 			<br> 
-			Still under construction...
 			<!--<br> If you are on mobile, tilt your phone to move the ball.-->
 		</div>
 		<img id="self" src="assets/self.jpg">
-		<div id="about" class="target">About</div>
+		<div id="about-hit-box"></div>
+			<div id="about" class="target">About</div>
 		<div id="vocab_tool" class="target">Vocab tool</div>
 		<div id="contact" class="target">Contact</div>
 	</div>
@@ -141,14 +248,12 @@
 	<div id="contact-div" class="hidden">
 		<div class="title" id="contact-header">Contact</div>
 		<div class="undertext" id="contact-text">
-			You can get in touch with me with any of the below methods:
+			You can get in touch with me through any of the below methods:
 			<br><br>
 			<span style="font-size: 40px">
-			<strong>Email:</strong> egmeade@live.com
+			Email: egmeade@live.com
 			<br>
-			<strong>Phone:</strong> (908) 963-3550
-			<br>
-			<strong>Wechat:</strong> erikjunnan
+			Wechat: erikjunnan
 			</span>
 		</div>
 	</div>

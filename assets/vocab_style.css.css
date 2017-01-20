@@ -1,0 +1,68 @@
+#yuyan {
+	position: absolute;
+	width: 120px;
+	right: 0%;
+	margin-right: 20px;
+}
+
+#uk, #china {
+	height: 40px;
+	width: 40px;
+	cursor: pointer;
+}
+
+#vocab_read_me {
+	font-size: 20px;
+}
+
+#cons-correct {
+	width: 30px;
+	padding-left: 7px;
+	padding-right: 0px;
+	font-size: 20px;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.vocab-button {
+	cursor: pointer;
+	margin-top: 20px;
+	margin-bottom: 50px;
+	border: blue solid 2px;
+	background-color: white;
+	color: blue;
+	border-radius: 5px;
+	font-size: 20px;
+	padding: 10px;
+}
+
+#vocab_answer {
+	font-size: 20px;
+	width: 200px;
+	margin-left: 10px;
+	padding-left: 7px;
+}
+
+#example{
+	text-align: left;
+	white-space: pre;
+	width: 100%;
+	font-size: 18px;
+}
+
+
+h2, h3 {
+	color: blue;
+	text-align: center;
+}
+
+p {
+	font-size: 20px;
+}
+
+#training-tool {
+	text-align: center;
+	margin: 0 auto;
+	width: 900px;
+}
+

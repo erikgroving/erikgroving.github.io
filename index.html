@@ -18,329 +18,86 @@
 	<link rel="stylesheet" type="text/css" href="assets/style.css	">
 	<script>
 		// Default initializations
-		var lang = "eng";
-		var quiz_idx = 0;
-		var prev_idx = 0;
-		var num_correct_clear = 3;
-		var f;
-		var clear_words = true;
-		var contents;
-		var vocab = [];
-		var card_stack = [];
-		var total_correct = 0;
-		var total_wrong = 0;
+		var move_ball;
+		var getPix = /\d+/;
+		var step = 1;
+
 		$(function() {
-
+			var keys = {}
 			// Event bindings
-			$('.lang-btn').on('click', function () {
-				lang = $(this).attr('id');
-				console.log('langs loaded');
-				//Perform GET request to change the language				
-				get_data = '/?lang=' + lang;
-				$.ajax ({
-					type: 'GET',
-					url: url
-				});
-			});
-			
-			
-			// Home button clicks
-			$('.main-btn').on('click', function() {
-				console.log(this.id);
-				displaySection(this.id);
-			});
-			
-			var r = new FileReader();
-			
-			r.onload = function (e) {
-				contents = e.target.result;
-				var line_split = / *\r?\n/;
-				var lines = contents.split(line_split);
-
-				vocab = [];
-				for (var i = 0; i < lines.length; i++) {
-					var wsp_split = / *\t+ *|  +/;
-					var l_r_vocab = lines[i].split(wsp_split);
-					if (l_r_vocab.length != 2) {
-						console.log(l_r_vocab);
-						console.log('Error with input file. Please use 2 columns, separated  by a tab.');
-						return;
-					}
-					vocab.push({
-						word: l_r_vocab[0],
-						word2: l_r_vocab[1],
-						correct: 0
-					});
-				}
-				refreshCardStack();
-			}			
-
-			$('#vocab_file').on('change', function(evt) {
-				f = evt.target.files[0];
-				if (f) {
-					r.readAsText(f);
-				}
-			});
-			
-			$('#switch').on('click', function() {
-				for (var i = 0; i < vocab.length; i++) {
-					var tmp = vocab[i].word;
-					vocab[i].word = vocab[i].word2;
-					vocab[i].word2 = tmp;
-				}
-				prev_quiz_idx = -1;
-				newWord();
-			});
-			
-			$('#start_stop').on('click', function() {
-				var status = $('#start_stop').html() == 'Start' || '开始' ? true : false;
-				if (status) {
-					if (vocab.length) {
-						newWord();
-						if (lang == "eng")
-							$('#start_stop').html('Stop');
-						else
-							$('#start_stop').html('停止');
-
-					}
-					else {
-						if (f) {
-							r.readAsText(f);
-							if (lang == "eng")
-								$('#start_stop').html('Stop');
-							else
-								$('#start_stop').html('停止');
-							setTimeout(newWord(), 2000);
-						}
-						else {
-							$('#correct').html('No file loaded. Load a file to begin');
-							$('#correct').css('color', 'red');
-						}
-					}
-				}
-				else {
-					$('#vocab_word').html('');
-					$('#correct').html('');
-						if (lang == "eng")
-							$('#start_stop').html('Start');
-						else
-							$('#start_stop').html('开始');
-				}
-			});
-			
-			$('#remove_word, #remove_curr_word').on('click', function() {
-				var idx = this.id == 'remove_word' ? prev_quiz_idx : quiz_idx;
-				if (idx == -1 || !vocab.length) {
-					return;
-				}
-				else {
-					$('#correct').html(vocab[idx].word + ' was removed.');
-					$('#correct').css('color', 'blue');
-
-					vocab.splice(idx, 1);
-					if (prev_quiz_idx < quiz_idx && idx == prev_quiz_idx) {
-						quiz_idx -= 1;
-					}
-					if (!vocab.length) {
-						$('#start_stop').html('Start');
-						$('#correct').html('That was the last word! No more words left!');
-						$('#correct').css('color', 'blue');
-						$('#vocab_word').html('');
-					}
-					if (idx == quiz_idx && vocab.length) {
-						newWord();
+			$(document).keydown(function(e) {
+				step = parseFloat($( document ).width()) / 100;
+				if (keys[37] || keys[38] || keys[39] || keys[40]) {
+					e.preventDefault();
+					if (!move_ball) {
+						moveBall();
+						move_ball = setInterval(moveBall, 10);
 					}
 				}
 			});
 			
-			$('#vocab_answer').on('keypress', function(e) {
-				if (e.keyCode == 13) {
-					if (!vocab.length) {
-						return;
-					}
-					if ($(this).val().toUpperCase() == vocab[quiz_idx].word2.toUpperCase()) {
-						if (lang == "eng")
-							$('#correct').html('Correct!');
-						else
-							$('#correct').html('正确！');
-						$('#correct').css('color', 'green');
-						vocab[quiz_idx].correct += 1;
-						if (vocab[quiz_idx].correct >= num_correct_clear && clear_words) {
-							vocab.splice(quiz_idx, 1);
-						}
-						
-						total_correct += 1;
-						$('#num_correct').html(total_correct);
-					}
-					else {
-						if (lang == "eng")
-							$('#correct').html('Sorry ' + vocab[quiz_idx].word + ' is ' + vocab[quiz_idx].word2);
-						else
-							$('#correct').html('不对，' + vocab[quiz_idx].word + '相等' + vocab[quiz_idx].word2);
-						$('#correct').css('color', 'red');
-						vocab[quiz_idx].correct = 0;
-						
-						total_wrong += 1;
-						$('#num_incorrect').html(total_wrong);
-
-					}
-					$('#vocab_answer').val('');
-					if (vocab.length > 0) {
-						newWord();
-					}
-					else {
-						$('#start_stop').html('Start');
-						$('#correct').html('No more words left!');
-						$('#correct').css('color', 'blue');
-						$('#vocab_word').html('');
-					}
+			$(document).keydown(function(e) {
+				keys[e.keyCode] = true;
+			});
+			$(document).keyup(function(e) {   
+				keys[e.keyCode] = false;
+			});
+			
+			function moveBall() {					
+				var left = $('#ball').css('left');
+				var top = $('#ball').css('top');
+				left = parseFloat(left.match(getPix));
+				top = parseFloat(top.match(getPix));
+				if (keys[37]) {
+					left = left - step;
+				}
+				if (keys[38]) {
+					top = top - step;
 				}				
-			});
-			
-			$('#auto-removal').on('click', function() {
-				clear_words = $(this).is(':checked') ? true : false;
-			});
-			
-			$('#cons-correct').on('keypress', function(e) {
-				if (e.keyCode == 13) {
-					$(this).blur();
+				if (keys[39]) {
+					left = left + step;
+				}				
+				if (keys[40]) {
+					top = top + step;
 				}
-			})
-			.on('blur', function() {
-				num_correct_clear = parseInt($(this).val());
-				console.log(num_correct_clear);			
-			})
-			
-			$('#uk').on('click', function() {
-				lang="eng"
-				$('#title').html('Vocab Trainer');
-				$('#enter_answer').html('Enter answer:');
-				$('#start_stop').html('Start');
-				$('#switch').html('Switch');
-				$('#remove_curr_word').html('Remove current word');
-				$('#remove_word').html('Remove previous word');
-				$('#auto_text').html('Automatically remove word after <input type="number" value=3 id="cons-correct"> consecutive correct answers');
-				$('#tr_corr').html('Correct: ');
-				$('#tr_incorr').html('Incorrect: ');
-				$('#README').html('README');
-				$('#README_DESC').html('Load a text file of the vocabulary you want to learn.');
-				$('#FORMAT').html('FORMAT');
-				$('#FORMAT_DESC').html('\
-					If your list in English-French, one column would\
-					be English vocab, and the other would be French. You can separate columns with a tab or multiple spaces.\
-					<br>\
-					For example, a file would have a look similar to the following:<br>\
-					<div id="example">\
-聪明  smart<br>\
-路    road<br>\
-我    I<br>\
-去    to go<br>\
-					</div>\
-					<br>\
-					Once the file is loaded, press start, and begin quizzing. Everything other function is fairly self-explanatory.\
-					<br>\
-					If there are any issues, please write to egmeade@live.com and let me know.\
-				');
-			
-			});
-			$('#china').on('click', function() {
-				lang="cn"
-				$('#title').html('单词复习');
-				$('#enter_answer').html('输入答案：');
-				$('#start_stop').html('开始');
-				$('#switch').html('转换');
-				$('#remove_curr_word').html('消除本词');
-				$('#remove_word').html('消除前词');
-				$('#auto_text').html('<input type="number" value=3 id="cons-correct"> 次正确就消除单词');
-				$('#tr_corr').html('正确：');
-				$('#tr_incorr').html('不对：');
-				$('#README').html('相关信息');
-				$('#README_DESC').html('请上传你想复习的生词表');
-				$('#FORMAT').html('文件格式');
-				$('#FORMAT_DESC').html('\
-					例子：如果你想练习中英单词，文件里左边可以当中文的词儿，右边是英文相当的词儿\
-					两个纵队之间需要放个tab或许两个空格以上。<br>比如说一个符合上面的要求的文件会像下面的打出来的：<br>\
-<div id="example">\
-聪明  smart<br>\
-路    road<br>\
-我    I<br>\
-去    to go<br>\
-</div><br>\
-文件上载了之后，按开始钮就可以开始复习。其他的功能都不说子明<br>如果有问题的话请联系egmeade@live.com。');
-			});
-			
-		});
-	
-		
-
-		function refreshCardStack() {
-			card_stack = vocab;
-			for (var i = 0; i < card_stack.length; i++) {
-				console.log (card_stack[i].word);
+				left = left + 'px';
+				top = top + 'px';
+				$('#ball').css('top', top);
+				$('#ball').css('left', left);
+				
+				if (~(keys[37] || keys[38] || keys[39] || keys[40])) {
+					clearInterval(move_ball);
+					move_ball = 0;
+				}
+				checkBall();
 			}
-		}
-		
-		function newWord() {
-			quiz_idx = Math.floor(Math.random() * card_stack.length);
-			$('#vocab_word').html(vocab[quiz_idx].word);		
-		}
-		
+
+			function checkBall() {
+				
+			}			
+		});
 		
 		function getParameterByName(name) {
 			var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
 			return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
 		}
+		
+
 	</script>
 </head>
 <body class="body">	
-	<div id="yuyan">
-		<img id="uk" src="assets/uk.png">
-		<img id="china" src="assets/china.png">
+	<div id="title">Welcome!</div>
+	<div id="instr">
+		I'm Erik and this is my homepage. 
+		<br>
+		Use the arrow keys to move 
+		the ball around to go where you want to go. 
+		<br> 
+		Still under construction...
+		<!--<br> If you are on mobile, tilt your phone to move the ball.-->
 	</div>
-	<div id="training-tool">
-		<h2 id="title">Vocab Trainer</h2>
-		<div id="load_field">
-			<input id="vocab_file" type="file">
-		</div>
-		<div id="testing_field">
-			<p id="vocab_word"></p>
-			<label for="vocab_answer"style="color: blue; display: block; font-size: 20px;"><span id="enter_answer">Enter answer:</span><input type="text" id="vocab_answer"</label>
-			<p id="correct"></p>
-			<button class="vocab-button" id="start_stop">Start</button>
-			<button class="vocab-button" id="switch">Switch</button>
-			<button class="vocab-button" id="remove_curr_word">Remove current word</button>
-			<button class="vocab-button" id="remove_word">Remove previous word</button>
-			<div style="display: block; margin-top: 20px; margin-bottom: 20px;">
-				<input type="checkbox" checked="true" id="auto-removal" style="margin-right: 10px; height: 20px; width: 20px;">
-				<span id="auto_text" style="font-size: 20px; color: blue;">Automatically remove word after <input type="number" value=3 id="cons-correct"> consecutive correct answers</span>
-			</div>
-			<div class="col-md-6" style="text-align: center; font-size: 24px; color: blue;"><span id="tr_corr">Correct: </span><span style="color: green;" id="num_correct">0</span></div>
-			<div class="col-md-6" style="text-align: center; font-size: 24px; color: blue;"><span id="tr_incorr">Incorrect: </span><span id="num_incorrect" style="color: red;">0</span></div>
-		</div>
-		
-		<div id="vocab_read_me">
-			<br><br><h3 id="README">README</h3>
-			<p id="README_DESC">
-			Load a text file of the vocabulary you want to learn. 
-			</p>
-			<h3 id="FORMAT">FORMAT</h3> 
-			<div id="FORMAT_DESC">
-			If your list in English-French, one column would
-			be English vocab, and the other would be French. You can separate columns with a tab or multiple spaces.
-			<br>
-			For example, a file would have a look similar to the following:<br>
-			<div id="example">
-聪明  smart<br>
-路    road<br>
-我    I<br>
-去    to go<br>
-</div>
-			<br>
-			Once the file is loaded, press start, and begin quizzing. Everything other function is fairly self-explanatory.
-			<br>
-			If there are any issues, please write to egmeade@live.com and let me know.
-			</div>
-		</div>
-	</div>
+	<div id="ball"></div>
+	<div id="about" class="target">About</div>
+	<div id="vocab_tool" class="target">Vocab tool</div>
 </body>
 </html>

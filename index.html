@@ -26,12 +26,14 @@
 			var keys = {}
 			// Event bindings
 			$(document).keydown(function(e) {
-				step = parseFloat($( document ).width()) / 100;
-				if (keys[37] || keys[38] || keys[39] || keys[40]) {
+				console.log('');
+				step = parseFloat($( document ).width()) / 250;
+				if (e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 39 || e.keyCode == 40) {
 					e.preventDefault();
+					console.log(move_ball);
 					if (!move_ball) {
 						moveBall();
-						move_ball = setInterval(moveBall, 10);
+						move_ball = setInterval(moveBall, 5);
 					}
 				}
 			});
@@ -43,7 +45,31 @@
 				keys[e.keyCode] = false;
 			});
 			
-			function moveBall() {					
+			$('#about').on('click', function() {
+				$('#home-page').addClass('hidden');
+				$('#back').removeClass('hidden');
+				$('#about-div').removeClass('hidden');
+			});
+			
+			$('#contact').on('click', function() {
+				$('#home-page').addClass('hidden');
+				$('#back').removeClass('hidden');
+				$('#contact-div').removeClass('hidden');			
+			});
+			
+			$('#back').on('click', function() {
+				$('#home-page').removeClass('hidden');
+				$('#back').addClass('hidden');
+				$('#about-div').addClass('hidden');
+				$('#contact-div').addClass('hidden');
+			});
+			
+			$('#vocab_tool').on('click', function() {
+				window.location.href = 'vocab_tool/index.html';
+			});
+			
+			function moveBall() {
+				console.log('tagged');
 				var left = $('#ball').css('left');
 				var top = $('#ball').css('top');
 				left = parseFloat(left.match(getPix));
@@ -64,8 +90,9 @@
 				top = top + 'px';
 				$('#ball').css('top', top);
 				$('#ball').css('left', left);
-				
-				if (~(keys[37] || keys[38] || keys[39] || keys[40])) {
+				console.log(keys[37] + ' ' + keys[38] + ' ' + keys[39] + ' ' + keys[40]);
+				if (!(keys[37] || keys[38] || keys[39] || keys[40])) {
+					console.log('interval was cleared');
 					clearInterval(move_ball);
 					move_ball = 0;
 				}
@@ -85,19 +112,48 @@
 
 	</script>
 </head>
-<body class="body">	
-	<div id="title">Welcome!</div>
-	<div id="instr">
-		I'm Erik and this is my homepage. 
-		<br>
-		Use the arrow keys to move 
-		the ball around to go where you want to go. 
-		<br> 
-		Still under construction...
-		<!--<br> If you are on mobile, tilt your phone to move the ball.-->
-	</div>
+<body class="body">
 	<div id="ball"></div>
-	<div id="about" class="target">About</div>
-	<div id="vocab_tool" class="target">Vocab tool</div>
+	<div id="home-page">
+		<div class="title" id="welcome">Welcome!</div>
+		<div id="instr">
+			I'm Erik and this is my homepage. 
+			<br>
+			Use the arrow keys to move 
+			the ball around to go where you want to go. 
+			<br> 
+			Still under construction...
+			<!--<br> If you are on mobile, tilt your phone to move the ball.-->
+		</div>
+		<img id="self" src="assets/self.jpg">
+		<div id="about" class="target">About</div>
+		<div id="vocab_tool" class="target">Vocab tool</div>
+		<div id="contact" class="target">Contact</div>
+	</div>
+	<div id="about-div" class="hidden">
+		<div class="title" id="about-welcome">About me!</div>
+		<div class="undertext" id="about-text">
+			I am a computer engineer from New Jersey. I went to 
+			the University of Michigan. I love sports and travelling. In total,
+			I have been to 10 countries.
+		</div>
+	</div>
+	<div id="contact-div" class="hidden">
+		<div class="title" id="contact-header">Contact</div>
+		<div class="undertext" id="contact-text">
+			You can get in touch with me with any of the below methods:
+			<br><br>
+			<span style="font-size: 40px">
+			<strong>Email:</strong> egmeade@live.com
+			<br>
+			<strong>Phone:</strong> (908) 963-3550
+			<br>
+			<strong>Wechat:</strong> erikjunnan
+			</span>
+		</div>
+	</div>
+	<div id="back" class="hidden target">
+		Back
+	</div>
 </body>
 </html>

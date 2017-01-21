@@ -21,10 +21,39 @@ body {
 	max-width: 1000px;
 }
 
+.about-img {
+	margin: 0 auto;
+	position: relative;
+	width: 80%;
+	max-width: 1000px;
+	text-align: center;
+}
+
+#cleo, #vn {
+	margin: 10px 50px 10px 50px;
+	height: 200px;
+	width: auto;
+}
+
 .desc {
+	margin: 0 auto;
 	font-size: 20px;
 	text-align: left;
+	color: white;	
+	padding-left: 50px;
+	padding-right: 50px;
 }
+.about-desc {
+	margin: 0 auto;
+	font-size: 25px;
+	text-align: left;
+	max-width: 950px;
+	color: white;	
+	padding-left: 50px;
+	padding-right: 50px;
+}
+
+
 
 .c_item {
 	font-size: 30px;
@@ -42,6 +71,7 @@ body {
 	text-align: center;
 	position: relative;
 	font-size: 25px;
+	width: 60%;
 	max-width: 900px;
 	color: white;
 }
@@ -53,7 +83,8 @@ body {
 	position: absolute;
 }
 .project {
-	margin-top: 50px;
+	margin-left: 50px;
+	margin-top: 35px;
 	font-size: 40px;
 	color: white;
 	text-align: left;
@@ -65,13 +96,19 @@ body {
 }
 
 #about{
-	top: 40%;
-	left: 20%;
+	top: 35%;
+	margin-left: auto;
+	margin-right: auto;
+	left: 0;
+	right: 0;
+	width: 120px;
 }
+
+
 
 #projects {
 	left: 70%;
-	top: 40%;
+	top: 70%;
 }
 
 #contact {
@@ -112,8 +149,9 @@ body {
 
 
 #ball {
+	z-index:10100;
 	position: absolute;
-	left: 50%;
+	left: 49%;
 	top: 50%;
 	background-color: blue;
 	width: 50px;

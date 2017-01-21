@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html>	
 <!--
-	DDDDD	K    K
-	D   DD	K  K
-	D    D	KK
-	D	 D	KK
-	D	DD  K  K
-	DDDDD   K    K
-
-	TODO: card stack method, words left
-
+	H     H   IIIIIII
+	H     H      I
+	H     H      I
+	HHHHHHH      I
+	H     H      I
+	H     H      I
+	H     H   IIIIIII
 -->
 <head>
 	<title>Exploring the world</title>
@@ -46,13 +44,21 @@
 		var con_top;
 		var con_height;
 		
+		// LinkedIn hitbox
+		var li_left;
+		var li_width;
 		
 		
+
+			
 		$(function() {
 
 			var keys = {}			
-			recalcHitBoxes();
-
+			$(document).ready(function(){
+				$('#ball').css('left', parseFloat($('#ball').css('left')) - 35);
+				recalcHitBoxes();
+			});
+			
 			// Event bindings
 			$(document).keydown(function(e) {
 				step = parseFloat($( document ).width()) / 250;
@@ -71,7 +77,10 @@
 			$(document).keyup(function(e) {   
 				keys[e.keyCode] = false;
 			});
-
+			
+			$( window ).resize(function() {
+			  recalcHitBoxes();
+			});
 			
 			$('#about').on('click', function() {
 				home_page = 0;
@@ -186,7 +195,7 @@
 				var lt_off = 20;
 				var wh_off = 40;
 				// About hit box
-				abt_left = parseFloat($('#about').css('left')) - lt_off;
+				abt_left = parseFloat($('#about').css('margin-left')) - lt_off;
 				abt_width = parseFloat($('#about').width()) + wh_off;
 				abt_top = parseFloat($('#about').css('top')) - lt_off;
 				abt_height = parseFloat($('#about').height()) + wh_off;
@@ -224,7 +233,7 @@
 			I'm Erik and this is my homepage. 
 			<br>
 			Use the arrow keys to move 
-			the ball around to go where you want to go. 
+			the ball and explore! 
 			<br> 
 			<!--<br> If you are on mobile, tilt your phone to move the ball.-->
 		</div>
@@ -235,10 +244,20 @@
 	</div>
 	<div id="about-div" class="page hidden">
 		<div class="title" id="about-welcome">About me!</div>
-		<div class="undertext" id="about-text">
-			I am a computer engineer from New Jersey. I went to 
-			the University of Michigan. I love sports and travelling. In total,
-			I have been to 10 countries.
+		<div class="about-img">
+			<img id="cleo" src="assets/cleo.jpg">
+			<img id="vn" src="assets/vn.jpg">
+		</div>
+		<div class="about-desc" id="about-text">
+			Hi! I am a computer engineer from New Jersey. I graduated from
+			the University of Michigan. I love sports, learning languages and
+			travelling. I have also been know to dabble in video games from time to time.<br><br>
+			If I'm not writing code, you can often find me playing sports or
+			planning my next trip. Soccer and basketball are my favorite pick-up sports. <br><br>
+			I love travelling and have been to 10 countries so far and am eager to continue exploring.
+			Perhaps due to my wanderlust, learning languages is one of my passions. Right now, I am
+			working on my 5th: Vietnamese. In addition to English, I can also speak Danish, Mandarin Chinese, and
+			French (albeit this one is probably a little rusty now).
 		</div>
 	</div>
 	<div id="contact-div" class="page hidden">
@@ -295,13 +314,19 @@
 				<div class="desc">
 					A tool I made for learning words in other languages.
 				</div>
-			</div>			
-			<div id="alarm-clock" class="project">
+			</div>
+			<div id="dsm" class="project">
+				Delta sigma modulator
+				<div class="desc">
+					Helped implement a delta sigma modulator used for ADC in Verilog.
+				</div>
+			</div>
+			<!--<div id="alarm-clock" class="project">
 				Silly Alarm Clock
 				<div class="desc">
 					Made an alarm clock that shoots you with water and plays music.
 				</div>
-			</div>
+			</div>-->
 		</div>
 	
 	</div>

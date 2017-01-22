@@ -100,7 +100,7 @@
 					e.preventDefault();
 					if (!move_ball) {
 						moveBall();
-						step = parseFloat($( document ).width()) / 175;
+						step = parseFloat($( document ).width()) / 215;
 
 						move_ball = setInterval(moveBall, 5);
 					}
@@ -118,6 +118,7 @@
 			  recalcHitBoxes();
 			});
 			
+		
 			$('#about').on('click', function() {
 				page = 1;
 				$('#home-page').addClass('hidden');
@@ -402,14 +403,14 @@
 			<img id="vn" src="assets/vn.jpg">
 		</div>
 		<div class="about-desc" id="about-text">
-			Hi! I am a computer engineer from New Jersey. I graduated from
-			the University of Michigan. I love sports, learning languages and
-			travelling. I also dabble in video games from time to time.<br><br>
+			Hi! I am Erik from New Jersey. I am a computer engineering grad from the
+			University of Michigan. I love sports, learning languages and
+			travelling. I also dabble in video games.<br><br>
 			When I'm not writing code, you can find me playing sports or
 			planning my next trip. Soccer and basketball are my favorite pick-up sports. <br><br>
 			I love travelling and have been to 10 countries so far and am eager to continue exploring.
-			Perhaps due to my wanderlust, learning languages is one of my passions. Right now, I am
-			working on my 5th: Vietnamese. In addition to English, I can also speak Danish, Mandarin Chinese, and
+			Perhaps due to my wanderlust, learning languages has become one of my passions. Right now, I am
+			working on Vietnamese. In addition to English, I can also speak Danish, Mandarin Chinese, and
 			French (albeit this one is probably a little rusty now).
 		</div>
 	</div>
@@ -515,11 +516,14 @@
 			We used a lot of various embedded systems techniques to implement this project, including timers,
 			interrupts, serial communication (XBee, N64), and memory-mapped IO. Code is available upon request. 
 			To see more, watch the video below!
-			<div id="laser-video">
-			<iframe width="420" height="315"
-				src="https://www.youtube.com/v/jUgGXYYEVrA">
-			</iframe>
+			<div id="vidme">
+<iframe src="https://vid.me/e/Gwlp?stats=1" width="422" height="240" frameborder="0" allowfullscreen webkitallowfullscreen mozallowfullscreen scrolling="no"></iframe>
 			</div>
+		</div>			
+		<div id="leshi">
+			<a href="http://www.letv.com/ptv/vplay/27545021.html" style="color: white;" target="_blank">
+		在中国的客户请点击这里观看视频
+		</a>
 		</div>
 	</div>
 	<div id="dpll-div" class="page hidden">

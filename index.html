@@ -21,7 +21,7 @@
 		var getPix = /\d+/;
 		var step = 1;
 
-		var home_page = 1;
+		var page = 0;
 		
 		// About hitbox
 		var abt_left;
@@ -33,7 +33,7 @@
 		var back_width;
 		var back_top;
 		var back_height;
-		// Vocab hitbox
+		// Projects hitbox
 		var proj_left;
 		var proj_width;
 		var proj_top;
@@ -42,11 +42,44 @@
 		var con_left;
 		var con_width;
 		var con_top;
-		var con_height;
-		
+		var con_height;		
 		// LinkedIn hitbox
 		var li_left;
 		var li_width;
+		var li_top;
+		var li_height;		
+		// Github hitbox
+		var gh_left;
+		var gh_width;
+		var gh_top;
+		var gh_height;
+		// Vocab door hitbox
+		var v_left;
+		var v_width;
+		var v_top;
+		var v_height;
+		// Proc door hitbox
+		var proc_left;
+		var proc_width;
+		var proc_top;
+		var proc_height;
+		// Laser arena hitbox
+		var la_left;
+		var la_width;
+		var la_top;
+		var la_height;
+		// Digital phase locked loop hitbox
+		var dpll_left;
+		var dpll_width;
+		var dpll_top;
+		var dpll_height;
+		// Delta sigma hitbox
+		var dsm_left;
+		var dsm_width;
+		var dsm_top;
+		var dsm_height;
+		
+		var init_step;
 		
 		
 
@@ -55,17 +88,20 @@
 
 			var keys = {}			
 			$(document).ready(function(){
+				init_step = parseFloat($( document ).width()) / 250;
+
 				$('#ball').css('left', parseFloat($('#ball').css('left')) - 35);
 				recalcHitBoxes();
 			});
 			
 			// Event bindings
 			$(document).keydown(function(e) {
-				step = parseFloat($( document ).width()) / 250;
 				if (e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 39 || e.keyCode == 40) {
 					e.preventDefault();
 					if (!move_ball) {
 						moveBall();
+						step = parseFloat($( document ).width()) / 175;
+
 						move_ball = setInterval(moveBall, 5);
 					}
 				}
@@ -83,16 +119,44 @@
 			});
 			
 			$('#about').on('click', function() {
-				home_page = 0;
+				page = 1;
 				$('#home-page').addClass('hidden');
 				$('#back').removeClass('hidden');
 				$('#about-div').removeClass('hidden');
 				recalcHitBoxes();
-
 			});
 			
+			$('#processor').on('click', function() {
+				page = 2;
+				$('#project-div').addClass('hidden');
+				$('#nwayproc').removeClass('hidden');
+				recalcHitBoxes();
+			});
+			$('#laser-arena').on('click', function() {
+				page = 2;
+				$('#project-div').addClass('hidden');
+				$('#laser-arena-div').removeClass('hidden');
+				recalcHitBoxes();
+			});
+			
+			$('#dpll').on('click', function() {
+				page = 2;
+				$('#project-div').addClass('hidden');
+				$('#dpll-div').removeClass('hidden');
+				recalcHitBoxes();
+			});
+			
+			$('#dsm').on('click', function() {
+				page = 2;
+				$('#project-div').addClass('hidden');
+				$('#dsm-div').removeClass('hidden');
+				recalcHitBoxes();
+			});
+			
+			
+			
 			$('#projects').on('click', function() {
-				home_page = 0;
+				page = 3;
 				$('#home-page').addClass('hidden');
 				$('#back').removeClass('hidden');
 				$('#project-div').removeClass('hidden');
@@ -100,7 +164,7 @@
 			});
 			
 			$('#contact').on('click', function() {
-				home_page = 0;
+				page = 1;
 				$('#home-page').addClass('hidden');
 				$('#back').removeClass('hidden');
 				$('#contact-div').removeClass('hidden');
@@ -108,11 +172,21 @@
 			});
 			
 			$('#back').on('click', function() {
-				home_page = 1;
-				$('.page').addClass('hidden');
-				$('#home-page').removeClass('hidden');
-				$('#back').addClass('hidden');
-				recalcHitBoxes();
+				if (page == 2) {
+					page = 3;
+					$('.page').addClass('hidden');
+					$('#project-div').removeClass('hidden');
+					recalcHitBoxes();
+					$('#ball').css('left', '50%');
+					$('#ball').css('top', '50px');
+				}
+				else {
+					page = 0;
+					$('.page').addClass('hidden');
+					$('#home-page').removeClass('hidden');
+					$('#back').addClass('hidden');
+					recalcHitBoxes();
+				}
 
 			});
 			
@@ -161,34 +235,71 @@
 				top = parseFloat(top.match(getPix)) + 35;
 				
 				// Check for about hit
-				if (left > abt_left && left < abt_left + abt_width && home_page) {
+				if (left > abt_left && left < abt_left + abt_width && page == 0) {
 					if (top > abt_top && top < abt_top + abt_height) {
 						$('#about').click();
 					}
 				}
 				// Check for back hit
-				if (left > back_left && left < back_left + back_width && !home_page) {
+				if (left > back_left && left < back_left + back_width && page) {
 					if (top > back_top && top < back_top + back_height) {
 						$('#back').click();
 					}
 				}
 				
-				// Check for vocab hit
-				if (left > proj_left && left < proj_left + proj_width && home_page) {
+				// Check for projects hit
+				if (left > proj_left && left < proj_left + proj_width && page == 0) {
 					if (top > proj_top && top < proj_top + proj_height) {
 						$('#projects').click();
-						$('#ball').css('top', '50px');
-						$('#ball').css('left', '50%');
 					}
 				}				
 				
 				// Check for contact hit
-				if (left > con_left && left < con_left + con_width && home_page) {
+				if (left > con_left && left < con_left + con_width && page == 0) {
 					if (top > con_top && top < con_top + con_height) {
 						$('#contact').click();
 					}
 				}
 				
+				// Check for proc hit
+				if (left > proc_left && left < proc_left + proc_width && page == 3) {
+					if (top > proc_top && top < proc_top + proc_height) {
+						$('#processor').click();
+					}
+				}
+				
+				// Check for laser arena hit
+				if (left > la_left && left < la_left + la_width && page == 3) {
+					if (top > la_top && top < la_top + la_height) {
+						$('#laser-arena').click();
+					}
+				}				
+				
+				// Check for dpll hit
+				if (left > dpll_left && left < dpll_left + dpll_width && page == 3) {
+					if (top > dpll_top && top < dpll_top + dpll_height) {
+						$('#dpll').click();
+					}
+				}
+				
+				// Check for dsm hit
+				if (left > dsm_left && left < dsm_left + dsm_width && page == 3) {
+					if (top > dsm_top && top < dsm_top + dsm_height) {
+						$('#dsm').click();
+					}
+				}				
+				
+				// Check for vocab hit
+				if (left > v_left && left < v_left + v_width && page == 3) {
+					if (top > v_top && top < v_top + v_height) {
+						$('#vocab_tool').click();
+					}
+				}
+	/*			if (left > li_left && left < li_left + li_width && !home_page) {
+					if (top > li_top && top < li_top + li_height) {
+						window.open('https://www.linkedin.com/in/erik-meade-a7328588', '_self');
+					}
+				}		*/		
 			}
 
 			function recalcHitBoxes() {
@@ -204,7 +315,7 @@
 				back_width = parseFloat($('#back').width()) + wh_off;
 				back_top = parseFloat($('#back').css('top')) - lt_off;
 				back_height = parseFloat($('#back').height()) + wh_off;
-				// Vocab hit box
+				// Projects hit box
 				proj_left = parseFloat($('#projects').css('left')) - lt_off;
 				proj_width = parseFloat($('#projects').width()) + wh_off;
 				proj_top = parseFloat($('#projects').css('top')) - lt_off;
@@ -214,6 +325,47 @@
 				con_width = parseFloat($('#contact').width()) + wh_off;
 				con_top = parseFloat($('#contact').css('top')) - lt_off;
 				con_height = parseFloat($('#contact').height()) + wh_off;
+				// Linked in hitbox
+				li_left = parseFloat($('#li').position().left) - lt_off;
+				li_width = parseFloat($('#li').width()) + wh_off;
+				li_top = parseFloat($('#li').position().top) - lt_off;
+				li_height = parseFloat($('#li').height()) + wh_off;
+				
+				
+				var dw_off = 20;
+				var dh_off = 40;
+				// Vocab hit box in hitbox
+				v_left = parseFloat($('#v_door').css('left')) - dw_off - 50;
+				v_width = parseFloat($('#v_door').width()) + dh_off;
+				v_top = parseFloat($('#v_door').css('top')) - dw_off;
+				v_height = parseFloat($('#v_door').height()) + dh_off;
+								
+				proc_left = parseFloat($('#proc_door').css('left')) - dw_off - 50;
+				proc_width = parseFloat($('#proc_door').width()) + dh_off;
+				proc_top = parseFloat($('#proc_door').css('top')) - dw_off;
+				proc_height = parseFloat($('#proc_door').height()) + dh_off;
+				/*
+				$('#hbox').height(proc_height);
+				$('#hbox').width(proc_width);
+				$('#hbox').css('left', proc_left);
+				$('#hbox').css('top', proc_top);
+				*/
+				dpll_left = parseFloat($('#dpll_door').css('left')) - dw_off - 50;
+				dpll_width = parseFloat($('#dpll_door').width()) + dh_off;
+				dpll_top = parseFloat($('#dpll_door').css('top')) - dw_off;
+				dpll_height = parseFloat($('#dpll_door').height()) + dh_off;
+				
+				dsm_left = parseFloat($('#dsm_door').css('left')) - dw_off - 50;
+				dsm_width = parseFloat($('#dsm_door').width()) + dh_off;
+				dsm_top = parseFloat($('#dsm_door').css('top')) - dw_off;
+				dsm_height = parseFloat($('#dsm_door').height()) + dh_off;
+				
+				la_left = parseFloat($('#la_door').css('left')) - dw_off - 50;
+				la_width = parseFloat($('#la_door').width()) + dh_off;
+				la_top = parseFloat($('#la_door').css('top')) - dw_off;
+				la_height = parseFloat($('#la_door').height()) + dh_off;
+				
+				
 			}
 		});
 		
@@ -227,6 +379,7 @@
 </head>
 <body class="body">
 	<div id="ball"></div>
+	<!--<div id="hbox"></div>-->
 	<div id="home-page" class="page">
 		<div class="title" id="welcome">Welcome!</div>
 		<div id="instr">
@@ -251,8 +404,8 @@
 		<div class="about-desc" id="about-text">
 			Hi! I am a computer engineer from New Jersey. I graduated from
 			the University of Michigan. I love sports, learning languages and
-			travelling. I have also been know to dabble in video games from time to time.<br><br>
-			If I'm not writing code, you can often find me playing sports or
+			travelling. I also dabble in video games from time to time.<br><br>
+			When I'm not writing code, you can find me playing sports or
 			planning my next trip. Soccer and basketball are my favorite pick-up sports. <br><br>
 			I love travelling and have been to 10 countries so far and am eager to continue exploring.
 			Perhaps due to my wanderlust, learning languages is one of my passions. Right now, I am
@@ -276,26 +429,28 @@
 			<br><br><br>
 			Or find me on the web!
 			<div class="c_item">
-				<a style="color: white;" href="https://www.linkedin.com/in/erik-meade-a7328588">LinkedIn</a>
+				<a id="li" style="color: white;" target="_blank" href="https://www.linkedin.com/in/erik-meade-a7328588">LinkedIn</a>
 			</div>
 			<div class="c_item">
-				<a style="color: white;" href="https://github.com/erikgroving">GitHub</a>
+				<a id="gh" style="color: white;" target="_blank" href="https://github.com/erikgroving">GitHub</a>
 			</div>
 		</div>
 	</div>
 	<div id="project-div" class="page hidden">
 		<div class="title" id="contact-header">Projects</div>
 		<div class="undertext">
-			Move the ball over a project to see more details!
+			Move the ball into a door to see more details!
 		</div>
 		<div id="project-container">
-			<div id="processor" class="project">
+			<div id="processor" class="project" style="margin-top: 10px;">
+				<img id="proc_door" class="door" src="assets/door.png">
 				N-way superscalar out-of-order processor
 				<div class="desc">
 					Designed an R10K style N-way out of order processor in Verilog.
 				</div>
 			</div>
 			<div id="laser-arena" class="project">
+				<img class="door" id="la_door" src="assets/door.png">
 				RC car laser arena game
 				<div class="desc">
 					Built an arena-style laser tag style game. Players control
@@ -304,21 +459,24 @@
 				</div>
 			</div>
 			<div id="dpll" class="project">
+				<img class="door" id="dpll_door" src="assets/door.png">
 				Digital phase locked-loop for laser
 				<div class="desc">
 					Implemented portable digital control electronics required for phase-lock looping a frequency comb.
 				</div>
 			</div>
 			<div id="vocab_tool" class="project">
+				<img class="door" id="v_door" src="assets/door.png">
 				Vocabulary tool
 				<div class="desc">
 					A tool I made for learning words in other languages.
 				</div>
 			</div>
 			<div id="dsm" class="project">
+				<img class="door" id="dsm_door" src="assets/door.png">
 				Delta sigma modulator
 				<div class="desc">
-					Helped implement a delta sigma modulator used for ADC in Verilog.
+					Wrote a delta sigma modulator used for an ADC in Verilog.
 				</div>
 			</div>
 			<!--<div id="alarm-clock" class="project">
@@ -329,6 +487,72 @@
 			</div>-->
 		</div>
 	
+	</div>
+	<div id="nwayproc" class="page hidden">
+		<div class="title">N-way superscalar OoO processor</div>
+		<div class="about-desc">
+			For my major design experience at the the University of Michigan, I implemented an
+			MIPS R10K N-way superscalar out-of-order processor using Verilog. R10K is an algorithm that takes
+			advantage of register renaming in order to avoid false hazards (such as write-after-read 
+			and write-after-write). Out-of-order design allows us to take advantage of instruction
+			level parallelism available in various programs.
+			<br><br>
+			Our processor was N-way, this means that the width of the pipeline could be parameterized. In
+			our final submission, we set N to 2 because this maximized our clock period vs. cycles-per-instruction (CPI).
+			<br><br>
+			My group outperformed the class average runtime on every benchmark, often double. The performance 
+			comparison graph is available on request. For even further details of this project, I
+			can send you the final paper which elaborates in more depth.			
+		</div>
+	</div>
+	<div id="laser-arena-div" class="page hidden">
+		<div class="title">RC car laser arena</div>
+		<div class="about-desc">
+			The laser arena was a game designed by myself as well as 3 others. My team designed
+			game that takes place in a 5x10 arena. There are two players. Each player controls a car via
+			a nintendo 64 controller that communicates over XBee. Each car had a SmartFusion SoC on board
+			that communicated with another SmartFusion which acted as a control panel.<br><br>
+			Each car was equipped with an IR diode as well as an IR detector. In survival mode, IR diodes 
+			attached along the arena would periodically turn on and 'fire'. If the car was hit, a point
+			would be added. The difficulty progressively increased until the game ended. At the end, the
+			player who got hit the least won. The paths of which the IR diodes fired was illuminated by
+			an array of Christmas LEDs.
+			<br><br>
+			We used a lot of various embedded systems techniques to implement this project, including timers,
+			interrupts, serial communication (XBee, N64), and memory-mapped IO. Code is available upon request.
+			<div id="laser-video">
+			<iframe width="420" height="315"
+				src="https://www.youtube.com/v/jUgGXYYEVrA">
+			</iframe>
+			</div>
+		</div>
+	</div>
+	<div id="dpll-div" class="page hidden">
+		<div class="title">DPLL of laser</div>
+		<div class="about-desc">			
+			<div class="about-img">
+				<img id="imra_booth" src="assets/imra_booth.png">
+				<img id="mobile_comb" src="assets/mobile_comb.png">
+			</div>
+			I worked on implementing the digital control electronics for over a year at IMRA America, Inc.
+			I cannot reveal much on the details, but I was able to demonstrate its abilities at the 
+			annual CLEO conference in San Jose, where it received much praise. I was the primary person
+			responsible for this project, and thus implemented front-end interface, back-end, controller, and FPGA code.
+			The above picture is of the IMRA booth at CLEO, which demoed my digital electronics and
+			their optical system.
+		</div>
+	</div>
+	<div id="dsm-div" class="page hidden">
+		<div class="title">Delta sigma modulator</div>
+		<div class="about-desc">
+			Wrote Verilog for a delta sigma modulator based off a MatLab model. 
+			Delta sigma modulation is being used in the project for an ADC. Code is viewable
+			on my GitHub profile. The MatLab model and the frequency response are viewable below:
+
+		</div>			
+		<div id="dsm_images">			
+			<img id="dsm_spectrum" src="assets/spectrum.png">
+		</div>
 	</div>
 	<div id="back" class="hidden target">
 		Back

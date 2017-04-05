@@ -13,396 +13,40 @@
 	<title>Exploring the world</title>
 	<meta charset="utf-8"> 
 	<script src="javascript/jquery.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="assets/style.css">
-	<link rel="shortcut icon" type="image/png" href='assets/favicon.png'/>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="shortcut icon" type="image/png" href='assets/favicon.png'/>  
+	<link rel="stylesheet" href="css/aos.css" />
+	<script src="javascript/aos.js"></script>
 	<script>
-		// Default initializations
-		var move_ball;
-		var getPix = /\d+/;
-		var step = 1;
+		$(document).on('click', 'a', function(event){
+			event.preventDefault();
 
-		var page = 0;
-		
-		// About hitbox
-		var abt_left;
-		var abt_width;
-		var abt_top;
-		var abt_height;		
-		// Back hitbox
-		var back_left;
-		var back_width;
-		var back_top;
-		var back_height;
-		// Projects hitbox
-		var proj_left;
-		var proj_width;
-		var proj_top;
-		var proj_height;
-		// Contact hitbox
-		var con_left;
-		var con_width;
-		var con_top;
-		var con_height;		
-		// LinkedIn hitbox
-		var li_left;
-		var li_width;
-		var li_top;
-		var li_height;		
-		// Github hitbox
-		var gh_left;
-		var gh_width;
-		var gh_top;
-		var gh_height;
-		// Vocab door hitbox
-		var v_left;
-		var v_width;
-		var v_top;
-		var v_height;
-		// Proc door hitbox
-		var proc_left;
-		var proc_width;
-		var proc_top;
-		var proc_height;
-		// Laser arena hitbox
-		var la_left;
-		var la_width;
-		var la_top;
-		var la_height;
-		// Digital phase locked loop hitbox
-		var dpll_left;
-		var dpll_width;
-		var dpll_top;
-		var dpll_height;
-		// Delta sigma hitbox
-		var dsm_left;
-		var dsm_width;
-		var dsm_top;
-		var dsm_height;
-		
-		var init_step;
-		
-		
-
-			
-		$(function() {
-
-			var keys = {}			
-			$(document).ready(function(){
-				init_step = parseFloat($( document ).width()) / 250;
-
-				$('#ball').css('left', parseFloat($('#ball').css('left')) - 35);
-				recalcHitBoxes();
-			});
-			
-			// Event bindings
-			$(document).keydown(function(e) {
-				if (e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 39 || e.keyCode == 40) {
-					e.preventDefault();
-					if (!move_ball) {
-						moveBall();
-						step = parseFloat($( document ).width()) / 215;
-
-						move_ball = setInterval(moveBall, 5);
-					}
-				}
-			});
-			
-			$(document).keydown(function(e) {
-				keys[e.keyCode] = true;
-			});
-			$(document).keyup(function(e) {   
-				keys[e.keyCode] = false;
-			});
-			
-			$( window ).resize(function() {
-			  recalcHitBoxes();
-			});
-			
-		
-			$('#about').on('click', function() {
-				page = 1;
-				$('#home-page').addClass('hidden');
-				$('#back').removeClass('hidden');
-				$('#about-div').removeClass('hidden');
-				recalcHitBoxes();
-			});
-			
-			$('#processor').on('click', function() {
-				page = 2;
-				$('#project-div').addClass('hidden');
-				$('#nwayproc').removeClass('hidden');
-				recalcHitBoxes();
-			});
-			$('#laser-arena').on('click', function() {
-				page = 2;
-				$('#project-div').addClass('hidden');
-				$('#laser-arena-div').removeClass('hidden');
-				recalcHitBoxes();
-			});
-			
-			$('#dpll').on('click', function() {
-				page = 2;
-				$('#project-div').addClass('hidden');
-				$('#dpll-div').removeClass('hidden');
-				recalcHitBoxes();
-			});
-			
-			$('#dsm').on('click', function() {
-				page = 2;
-				$('#project-div').addClass('hidden');
-				$('#dsm-div').removeClass('hidden');
-				recalcHitBoxes();
-			});
-			
-			
-			
-			$('#projects').on('click', function() {
-				page = 3;
-				$('#home-page').addClass('hidden');
-				$('#back').removeClass('hidden');
-				$('#project-div').removeClass('hidden');
-				recalcHitBoxes();		
-			});
-			
-			$('#contact').on('click', function() {
-				page = 1;
-				$('#home-page').addClass('hidden');
-				$('#back').removeClass('hidden');
-				$('#contact-div').removeClass('hidden');
-				recalcHitBoxes();
-			});
-			
-			$('#back').on('click', function() {
-				if (page == 2) {
-					page = 3;
-					$('.page').addClass('hidden');
-					$('#project-div').removeClass('hidden');
-					recalcHitBoxes();
-					$('#ball').css('left', '50%');
-					$('#ball').css('top', '50px');
-				}
-				else {
-					page = 0;
-					$('.page').addClass('hidden');
-					$('#home-page').removeClass('hidden');
-					$('#back').addClass('hidden');
-					recalcHitBoxes();
-				}
-
-			});
-			
-			$('#vocab_tool').on('click', function() {
-				window.location.href = 'vocab_tool/index.html';
-			});
-			
-			function moveBall() {
-				var left = $('#ball').css('left');
-				var top = $('#ball').css('top');
-				var wheight = $(document).height();
-				var wwidth = $(document).width();
-				left = parseFloat(left.match(getPix));
-				top = parseFloat(top.match(getPix));
-				if (keys[37]) {
-					left = left - step;
-				}
-				if (keys[38]) {
-					top = top - step;
-				}				
-				if (keys[39]) {
-					left = left + step;
-				}				
-				if (keys[40]) {
-					top = top + step;
-				}
-				if (left > wwidth - 75)
-					left = wwidth - 75;
-				if (top > wheight - 75)
-					top = wheight - 75;
-					
-
-				$('#ball').css('top', top);
-				$('#ball').css('left', left);
-				if (!(keys[37] || keys[38] || keys[39] || keys[40])) {
-					clearInterval(move_ball);
-					move_ball = 0;
-				}
-				checkBall();
-			}
-
-			function checkBall() {
-				var left = $('#ball').css('left');
-				var top = $('#ball').css('top');
-				left = parseFloat(left.match(getPix)) + 35;
-				top = parseFloat(top.match(getPix)) + 35;
-				
-				// Check for about hit
-				if (left > abt_left && left < abt_left + abt_width && page == 0) {
-					if (top > abt_top && top < abt_top + abt_height) {
-						$('#about').click();
-					}
-				}
-				// Check for back hit
-				if (left > back_left && left < back_left + back_width && page) {
-					if (top > back_top && top < back_top + back_height) {
-						$('#back').click();
-					}
-				}
-				
-				// Check for projects hit
-				if (left > proj_left && left < proj_left + proj_width && page == 0) {
-					if (top > proj_top && top < proj_top + proj_height) {
-						$('#projects').click();
-					}
-				}				
-				
-				// Check for contact hit
-				if (left > con_left && left < con_left + con_width && page == 0) {
-					if (top > con_top && top < con_top + con_height) {
-						$('#contact').click();
-					}
-				}
-				
-				// Check for proc hit
-				if (left > proc_left && left < proc_left + proc_width && page == 3) {
-					if (top > proc_top && top < proc_top + proc_height) {
-						$('#processor').click();
-					}
-				}
-				
-				// Check for laser arena hit
-				if (left > la_left && left < la_left + la_width && page == 3) {
-					if (top > la_top && top < la_top + la_height) {
-						$('#laser-arena').click();
-					}
-				}				
-				
-				// Check for dpll hit
-				if (left > dpll_left && left < dpll_left + dpll_width && page == 3) {
-					if (top > dpll_top && top < dpll_top + dpll_height) {
-						$('#dpll').click();
-					}
-				}
-				
-				// Check for dsm hit
-				if (left > dsm_left && left < dsm_left + dsm_width && page == 3) {
-					if (top > dsm_top && top < dsm_top + dsm_height) {
-						$('#dsm').click();
-					}
-				}				
-				
-				// Check for vocab hit
-				if (left > v_left && left < v_left + v_width && page == 3) {
-					if (top > v_top && top < v_top + v_height) {
-						$('#vocab_tool').click();
-					}
-				}
-	/*			if (left > li_left && left < li_left + li_width && !home_page) {
-					if (top > li_top && top < li_top + li_height) {
-						window.open('https://www.linkedin.com/in/erik-meade-a7328588', '_self');
-					}
-				}		*/		
-			}
-
-			function recalcHitBoxes() {
-				var lt_off = 20;
-				var wh_off = 40;
-				// About hit box
-				abt_left = parseFloat($('#about').css('margin-left')) - lt_off;
-				abt_width = parseFloat($('#about').width()) + wh_off;
-				abt_top = parseFloat($('#about').css('top')) - lt_off;
-				abt_height = parseFloat($('#about').height()) + wh_off;
-				// Back hit box
-				back_left = parseFloat($('#back').css('left')) - lt_off;
-				back_width = parseFloat($('#back').width()) + wh_off;
-				back_top = parseFloat($('#back').css('top')) - lt_off;
-				back_height = parseFloat($('#back').height()) + wh_off;
-				// Projects hit box
-				proj_left = parseFloat($('#projects').css('left')) - lt_off;
-				proj_width = parseFloat($('#projects').width()) + wh_off;
-				proj_top = parseFloat($('#projects').css('top')) - lt_off;
-				proj_height = parseFloat($('#projects').height()) + wh_off;
-				// Contact hit box
-				con_left = parseFloat($('#contact').css('left')) - lt_off;
-				con_width = parseFloat($('#contact').width()) + wh_off;
-				con_top = parseFloat($('#contact').css('top')) - lt_off;
-				con_height = parseFloat($('#contact').height()) + wh_off;
-				// Linked in hitbox
-				li_left = parseFloat($('#li').position().left) - lt_off;
-				li_width = parseFloat($('#li').width()) + wh_off;
-				li_top = parseFloat($('#li').position().top) - lt_off;
-				li_height = parseFloat($('#li').height()) + wh_off;
-				
-				
-				var dw_off = 20;
-				var dh_off = 40;
-				// Vocab hit box in hitbox
-				v_left = parseFloat($('#v_door').css('left')) - dw_off - 50;
-				v_width = parseFloat($('#v_door').width()) + dh_off;
-				v_top = parseFloat($('#v_door').css('top')) - dw_off;
-				v_height = parseFloat($('#v_door').height()) + dh_off;
-								
-				proc_left = parseFloat($('#proc_door').css('left')) - dw_off - 50;
-				proc_width = parseFloat($('#proc_door').width()) + dh_off;
-				proc_top = parseFloat($('#proc_door').css('top')) - dw_off;
-				proc_height = parseFloat($('#proc_door').height()) + dh_off;
-				/*
-				$('#hbox').height(proc_height);
-				$('#hbox').width(proc_width);
-				$('#hbox').css('left', proc_left);
-				$('#hbox').css('top', proc_top);
-				*/
-				dpll_left = parseFloat($('#dpll_door').css('left')) - dw_off - 50;
-				dpll_width = parseFloat($('#dpll_door').width()) + dh_off;
-				dpll_top = parseFloat($('#dpll_door').css('top')) - dw_off;
-				dpll_height = parseFloat($('#dpll_door').height()) + dh_off;
-				
-				dsm_left = parseFloat($('#dsm_door').css('left')) - dw_off - 50;
-				dsm_width = parseFloat($('#dsm_door').width()) + dh_off;
-				dsm_top = parseFloat($('#dsm_door').css('top')) - dw_off;
-				dsm_height = parseFloat($('#dsm_door').height()) + dh_off;
-				
-				la_left = parseFloat($('#la_door').css('left')) - dw_off - 50;
-				la_width = parseFloat($('#la_door').width()) + dh_off;
-				la_top = parseFloat($('#la_door').css('top')) - dw_off;
-				la_height = parseFloat($('#la_door').height()) + dh_off;
-				
-				
-			}
+			$('html, body').animate({
+				scrollTop: $( $.attr(this, 'href') ).offset().top
+			}, 1000);
 		});
-		
-		function getParameterByName(name) {
-			var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
-			return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
-		}
-		
-
 	</script>
+	
+
 </head>
-<body class="body">
-	<div id="ball"></div>
-	<!--<div id="hbox"></div>-->
-	<div id="home-page" class="page">
-		<div class="title" id="welcome">Welcome!</div>
-		<div id="instr">
-			I'm Erik and this is my homepage. 
-			<br>
-			Use the arrow keys to move 
-			the ball and explore! 
-			<br> 
-			<!--<br> If you are on mobile, tilt your phone to move the ball.-->
+<body>
+	<div id="landing">
+		<div id="header-bar">
+			<ul>
+				<li class="tab">
+					<a class="tab-btn" href="#about">About</a>
+				</li>
+				<li class="tab">
+					<a class="tab-btn" href="#projects">Projects</a>
+				</li>
+				<li class="tab">
+					<a class="tab-btn" href="#contact">Contact</a>
+				</li>
+			<ul>
 		</div>
-		<img id="self" src="assets/self.jpg">
-		<div id="about" class="target">About</div>
-		<div id="projects" class="target">Projects </div>
-		<div id="contact" class="target">Contact</div>
 	</div>
-	<div id="about-div" class="page hidden">
-		<div class="title" id="about-welcome">About me!</div>
-		<div class="about-img">
-			<img id="cleo" src="assets/cleo.jpg">
-			<img id="vn" src="assets/vn.jpg">
-		</div>
-		<div class="about-desc" id="about-text">
+	<div data-aos="fade-left" data-aos-once="true" id="about" class="full-height">
+		<div  class="text-section">
 			Hi! I am Erik from New Jersey. I am a computer engineering grad from the
 			University of Michigan. I love sports, learning languages and
 			travelling. I also dabble in video games.<br><br>
@@ -414,9 +58,46 @@
 			French (albeit this one is probably a little rusty now).
 		</div>
 	</div>
-	<div id="contact-div" class="page hidden">
-		<div class="title" id="contact-header">Contact</div>
-		<div class="undertext" id="contact-text">
+	<div data-aos="fade-right" id="projects" class="full-height">
+		<div class="text-section">
+			<div id="project-container">
+				<div id="processor" class="project" style="margin-top: 10px;">
+					N-way superscalar out-of-order processor
+					<div class="desc">
+						Designed an R10K style N-way out of order processor in Verilog.
+					</div>
+				</div>
+				<div id="laser-arena" class="project">
+					RC car laser arena game
+					<div class="desc">
+						Built an arena-style laser tag style game. Players control
+						RC cars via nintendo 64 controller. Two modes of play: arena
+						and survival.
+					</div>
+				</div>
+				<div id="dpll" class="project">
+					Digital phase locked-loop for laser
+					<div class="desc">
+						Implemented portable digital control electronics required for phase-lock looping a frequency comb.
+					</div>
+				</div>
+				<div id="vocab_tool" class="project">
+					Vocabulary tool
+					<div class="desc">
+						A tool I made for learning words in other languages.
+					</div>
+				</div>
+				<div id="dsm" class="project">
+					Delta sigma modulator
+					<div class="desc">
+						Wrote a delta sigma modulator used for an ADC in Verilog.
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div data-aos="fade-up"id="contact" class="full-height">
+		<div class="text-section">
 			Get in touch!
 				<div class="c_item">
 					Email: egmeade@live.com
@@ -437,125 +118,13 @@
 			</div>
 		</div>
 	</div>
-	<div id="project-div" class="page hidden">
-		<div class="title" id="contact-header">Projects</div>
-		<div class="undertext">
-			Move the ball into a door to see more details!
-		</div>
-		<div id="project-container">
-			<div id="processor" class="project" style="margin-top: 10px;">
-				<img id="proc_door" class="door" src="assets/door.png">
-				N-way superscalar out-of-order processor
-				<div class="desc">
-					Designed an R10K style N-way out of order processor in Verilog.
-				</div>
-			</div>
-			<div id="laser-arena" class="project">
-				<img class="door" id="la_door" src="assets/door.png">
-				RC car laser arena game
-				<div class="desc">
-					Built an arena-style laser tag style game. Players control
-					RC cars via nintendo 64 controller. Two modes of play: arena
-					and survival.
-				</div>
-			</div>
-			<div id="dpll" class="project">
-				<img class="door" id="dpll_door" src="assets/door.png">
-				Digital phase locked-loop for laser
-				<div class="desc">
-					Implemented portable digital control electronics required for phase-lock looping a frequency comb.
-				</div>
-			</div>
-			<div id="vocab_tool" class="project">
-				<img class="door" id="v_door" src="assets/door.png">
-				Vocabulary tool
-				<div class="desc">
-					A tool I made for learning words in other languages.
-				</div>
-			</div>
-			<div id="dsm" class="project">
-				<img class="door" id="dsm_door" src="assets/door.png">
-				Delta sigma modulator
-				<div class="desc">
-					Wrote a delta sigma modulator used for an ADC in Verilog.
-				</div>
-			</div>
-			<!--<div id="alarm-clock" class="project">
-				Silly Alarm Clock
-				<div class="desc">
-					Made an alarm clock that shoots you with water and plays music.
-				</div>
-			</div>-->
-		</div>
-	
-	</div>
-	<div id="nwayproc" class="page hidden">
-		<div class="title">N-way superscalar OoO processor</div>
-		<div class="about-desc">
-			For my major design experience at the the University of Michigan, I implemented an
-			MIPS R10K N-way superscalar out-of-order processor using Verilog. R10K is an algorithm that takes
-			advantage of register renaming in order to avoid false hazards (such as write-after-read 
-			and write-after-write). Out-of-order design allows us to take advantage of instruction
-			level parallelism available in various programs.
-			<br><br>
-			Our processor was N-way, this means that the width of the pipeline could be parameterized. In
-			our final submission, we set N to 2 because this maximized our clock period vs. cycles-per-instruction (CPI).
-			<br><br>
-			My group outperformed the class average runtime on every benchmark, often double. The performance 
-			comparison graph is available on request. For even further details of this project, I
-			can send you the final paper which elaborates in more depth.			
-		</div>
-	</div>
-	<div id="laser-arena-div" class="page hidden">
-		<div class="title">RC car laser arena</div>
-		<div class="about-desc">
-			The laser arena was a game designed by myself as well as 3 others. My team designed
-			game that takes place in a 5x10 arena. There are two players. Each player controls a car via
-			a nintendo 64 controller that communicates over XBee. Each car had a SmartFusion SoC on board
-			that communicated with another SmartFusion which acted as a control panel.<br><br>
-			We used a lot of various embedded systems techniques to implement this project, including timers,
-			interrupts, serial communication (XBee, N64), and memory-mapped IO. Code is available upon request. 
-			To see more, watch the video below!
-
-		</div>				
-		<div id="vidme">
-			<iframe src="https://vid.me/e/Gwlp?stats=1" width="422" height="240" frameborder="0" allowfullscreen webkitallowfullscreen mozallowfullscreen scrolling="no"></iframe>
-		</div>		
-		<div id="leshi">
-			<a href="http://www.letv.com/ptv/vplay/27545021.html" style="color: white;" target="_blank">
-		在中国大陆的用户请点击这里观看视频
-		</a>
-		</div>
-	</div>
-	<div id="dpll-div" class="page hidden">
-		<div class="title">DPLL of laser</div>
-		<div class="about-desc">			
-			<div class="about-img">
-				<img id="imra_booth" src="assets/imra_booth.png">
-				<img id="mobile_comb" src="assets/mobile_comb.PNG">
-			</div>
-			I worked on implementing the digital control electronics for over a year at IMRA America, Inc.
-			I cannot reveal much on the details, but I was able to demonstrate its abilities at the 
-			annual CLEO conference in San Jose, where it received much praise. I was the primary person
-			responsible for this project, and thus implemented front-end interface, back-end, controller, and FPGA code.
-			The above picture is of the IMRA booth at CLEO, which demoed my digital electronics and
-			their optical system.
-		</div>
-	</div>
-	<div id="dsm-div" class="page hidden">
-		<div class="title">Delta sigma modulator</div>
-		<div class="about-desc">
-			Wrote Verilog for a delta sigma modulator based off a MatLab model. 
-			Delta sigma modulation is being used in the project for an ADC. Code is viewable
-			on my GitHub profile. The MatLab model and the frequency response are viewable below:
-
-		</div>			
-		<div id="dsm_images">			
-			<img id="dsm_spectrum" src="assets/spectrum.png">
-		</div>
-	</div>
-	<div id="back" class="hidden target">
-		Back
-	</div>
-</body>
+	<p style="text-align:center; margin-top: 20px;">
+		Personal website of Erik Meade
+	</p>
+</body>	
+	<script>
+		AOS.init({
+			duration: 1200
+		});
+	</script>
 </html>

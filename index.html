@@ -18,34 +18,82 @@
 	<link rel="stylesheet" href="css/aos.css" />
 	<script src="javascript/aos.js"></script>
 	<script>
-		$(document).on('click', 'a', function(event){
+		$(document).on('click', '.tab-btn', function(event){
 			event.preventDefault();
 
 			$('html, body').animate({
 				scrollTop: $( $.attr(this, 'href') ).offset().top
 			}, 1000);
 		});
+		
+		$(
+			$(document).on('scroll', function() {
+				var scr = $(document).scrollTop();
+				console.log($(document).scrollTop());
+				if (scr > 300) {
+					navBarTop();
+					$('.tab-btn').css('font-weight', 400);
+					$('.tab-btn').css('border-bottom', 'none');	
+					if (scr > 2000) {
+						$('#contact-tab').css('font-weight', 700);
+						$('#contact-tab').css('border-bottom', '2px solid #474645');
+					}
+					else if (scr > 1300) {
+						$('#proj-tab').css('font-weight', 700);
+						$('#proj-tab').css('border-bottom', '2px solid #474645');				
+					}
+					else if (scr > 400) {
+						$('#about-tab').css('font-weight', 700);
+						$('#about-tab').css('border-bottom', '2px solid #474645');	
+
+					}
+				}
+				else {
+					navBarLanding();
+				}
+			})
+			
+		);
+		
+		function navBarLanding() {
+			$('#header-bar').css('margin-top', '300px');
+			$('#header-bar').css('position', 'relative');
+			$('#header-bar').css('padding', '20px 0 0 20px');
+			$('#header-bar').css('max-width', '1000px');
+		}
+		
+		function navBarTop() {
+			$('#header-bar').css('padding', '10px 0 0 10px');
+			$('#header-bar').css('top', '0px');
+			$('#header-bar').css('max-width', '100vw');
+			$('#header-bar').css('margin', '0 auto');
+			$('#header-bar').css('left', '0');
+			$('#header-bar').css('right', '0');
+			$('#header-bar').css('position', 'fixed');
+
+		}
 	</script>
 	
 
 </head>
 <body>
+<a id="gh" style="color: white;" target="_blank" href="https://github.com/erikgroving">GitHub</a>
 	<div id="landing">
 		<div id="header-bar">
 			<ul>
 				<li class="tab">
-					<a class="tab-btn" href="#about">About</a>
+					<a id="about-tab" class="tab-btn" href="#about">About</a>
 				</li>
 				<li class="tab">
-					<a class="tab-btn" href="#projects">Projects</a>
+					<a id="proj-tab" class="tab-btn" href="#projects">Projects</a>
 				</li>
 				<li class="tab">
-					<a class="tab-btn" href="#contact">Contact</a>
+					<a id="contact-tab" class="tab-btn" href="#contact">Contact</a>
 				</li>
 			<ul>
 		</div>
 	</div>
-	<div data-aos="fade-left" data-aos-once="true" id="about" class="full-height">
+	<div data-aos="fade-left" id="about" class="full-height">
 		<div  class="text-section">
 			Hi! I am Erik from New Jersey. I am a computer engineering grad from the
 			University of Michigan. I love sports, learning languages and
@@ -96,7 +144,7 @@
 			</div>
 		</div>
 	</div>
-	<div data-aos="fade-up"id="contact" class="full-height">
+	<div data-aos="fade-up" id="contact" class="full-height">
 		<div class="text-section">
 			Get in touch!
 				<div class="c_item">
@@ -111,10 +159,10 @@
 			<br><br><br>
 			Or find me on the web!
 			<div class="c_item">
-				<a id="li" style="color: white;" target="_blank" href="https://www.linkedin.com/in/erik-meade-a7328588">LinkedIn</a>
+				<a style="color: #474645;" target="_blank" href="https://www.linkedin.com/in/erik-meade-a7328588">LinkedIn</a>
 			</div>
 			<div class="c_item">
-				<a id="gh" style="color: white;" target="_blank" href="https://github.com/erikgroving">GitHub</a>
+				<a style="color: #474645;" target="_blank" href="https://github.com/erikgroving">GitHub</a>
 			</div>
 		</div>
 	</div>
@@ -124,7 +172,7 @@
 </body>	
 	<script>
 		AOS.init({
-			duration: 1200
+			duration: 1400
 		});
 	</script>
 </html>

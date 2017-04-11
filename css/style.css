@@ -73,11 +73,15 @@ ul, ol, li {
 	max-width: 800px;
 	padding-top: 20px;
 	padding-bottom: 20px;
-	margin: 300px auto 0 auto;
+	top: 40vh;
+	margin: 0 auto;
 	text-align: center; 
+	left: 0;
+	right: 0;
 	-webkit-transition: all 0.2s ease;
 	transition: all 0.2s ease;
 	z-index: 1;
+	position: fixed;
 	background-color: #fbfbfa;
 }
 

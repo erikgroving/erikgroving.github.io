@@ -17,6 +17,8 @@
 	<link rel="shortcut icon" type="image/png" href='assets/favicon.png'/>  
 	<link rel="stylesheet" href="css/aos.css" />
 	<script src="javascript/aos.js"></script>
+
+
 	<script>
 		$(document).on('click', '.tab-btn', function(event){
 			event.preventDefault();
@@ -26,18 +28,27 @@
 			}, 1000);
 		});
 		
-		$(
+		$(function() {
+			if (/Mobi/.test(navigator.userAgent)) {
+				console.log('mobile');
+			}
+			else {
+				console.log('not mobile');
+			}
+		});
+		
+		
+		$(    
+		
+
+			
 			$(document).on('scroll', function() {
 				var half_screenheight = $(window).height() * 0.5;
 				var scr = $(document).scrollTop();
 				var about_delta = scr - $('#about').position().top;
 				var proj_delta = scr - $('#projects').position().top;
 				var cont_delta = scr - $('#contact').position().top;
-				console.log('about_delta ' + about_delta);
-				console.log('proj_delta ' + proj_delta);
-				console.log('cont_delta ' + cont_delta);	
-				//console.log($(document).scrollTop());
-				//console.log($('#about').position().top);
+
 				if (scr > 0.7 * half_screenheight) {
 					navBarTop();
 					$('.tab-btn').css('font-weight', 400);
@@ -65,12 +76,16 @@
 			
 		);
 		
-		function navBarLanding() {
+		function navBarLanding() {			
+			var next_pos = $(window).height() * 0.4 - $(document).scrollTop();
 			$('#header-bar').removeClass('top-bar');
+			$('#header-bar').css('top', next_pos);
 		}
 		
 		function navBarTop() {
+			$('#header-bar').css('top', '0px');
 			$('#header-bar').addClass('top-bar');
+			//$('#header-bar').top
 		}
 	</script>
 	

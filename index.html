@@ -35,14 +35,41 @@
 			else {
 				console.log('not mobile');
 			}
+			checkScroll();
 		});
 		
 		
-		$(    
-		
+		$(function() {    
+			var screenheight = $(window).height();
 
 			
-			$(document).on('scroll', function() {
+			$(document).on('scroll', function () {
+				checkScroll();
+				console.log('ok');
+			})
+			
+			$('.project').not('#vocab_tool').on('click', function() {
+				$('.project').not(this).hide();	
+				$('html, body').animate({
+					scrollTop: $(this).offset().top - 0.2 * screenheight
+				}, 300);
+				$(this).children('.short_desc').hide();
+				$(this).children('.long_desc').show();
+				$('#back').show();
+			});
+			
+			$('#back').on('click', function() {
+				$('.project').show();
+				$('.short_desc').show();
+				$('.long_desc').hide();
+				$('#back').hide(); 
+			});
+			
+
+
+			
+		});
+		function checkScroll() {
 				var half_screenheight = $(window).height() * 0.5;
 				var scr = $(document).scrollTop();
 				var about_delta = scr - $('#about').position().top;
@@ -70,19 +97,23 @@
 				else {
 					navBarLanding();
 				}
-			})
-			
-
-			
-		);
-		
-		function navBarLanding() {			
+		}
+		var landing = true;
+		function navBarLanding() {	
 			var next_pos = $(window).height() * 0.4 - $(document).scrollTop();
-			$('#header-bar').removeClass('top-bar');
+			if (!landing) {
+				$('#header-bar').addClass('transition');
+				$('#header-bar').removeClass('top-bar');
+				setTimeout(function() {
+					$('#header-bar').removeClass('transition');
+				}, 250);
+			}
 			$('#header-bar').css('top', next_pos);
+			landing = true;
 		}
 		
 		function navBarTop() {
+			landing = false;
 			$('#header-bar').css('top', '0px');
 			$('#header-bar').addClass('top-bar');
 			//$('#header-bar').top
@@ -110,44 +141,101 @@
 	<div data-aos="fade-left" id="about" class="full-height">
 		<div  class="text-section">
 			Erik Meade was born in New Jersey and graduated with a BSc in Computer Engineering from
-			the University of Michigan. He currently resides in Copenhagen, Denmark.
+			the University of Michigan. He is most interested in machine learning. He primarily programs
+			in Verilog, C, C++, JavaScript and Python. He currently resides in Copenhagen, Denmark.
 			In his free time, he enjoys playing sports, learning languages, and travelling the world.
 		</div>
 	</div>
 	<div data-aos="fade-right" id="projects" class="full-height">
 		<div class="text-section">
+			<div class="proj_title" id="back" hidden>Back</div>
 			<div id="processor" class="project" style="margin-top: 10px;">
 				<span class="proj_title" id="processor"> N-way superscalar out-of-order processor </span>
-				<div class="desc" style="text-decoration: none">
+				<div class="short_desc desc" style="text-decoration: none">
 					Designed an R10K style N-way out of order processor in Verilog.
+				</div>
+				<div class="long_desc desc" style="text-decoration: none" hidden>
+					For my major design experience at the the University of Michigan, I implemented a
+					MIPS R10K N-way superscalar out-of-order processor using Verilog. R10K is an algorithm that takes
+					advantage of register renaming in order to avoid false hazards (such as write-after-read 
+					and write-after-write). Out-of-order design allows us to take advantage of instruction
+					level parallelism available in various programs.
+					<br><br>
+					Our processor was N-way, this means that the width of the pipeline could be parameterized. In
+					our final submission, we set N to 2 because this maximized our clock period vs. cycles-per-instruction (CPI).
+					<br><br>
+					The below graph shows the relative performance of the processor. It performed faster on every
+					benchmark relative to the class.<br>
+					<div style="text-align: center;">
+						<img style="max-height: 400px; width: auto;" src="assets/nospaces_f16.png">
+					</div>
+
+				</div>
+			</div>			
+			<div id="dsm" class="project">
+				<span class="proj_title" id="dsm_title">Delta sigma modulator</span>
+				<div class="short_desc desc">
+					Wrote a delta sigma modulator used for an ADC in Verilog.
+				</div>
+				<div class="long_desc desc" hidden>
+					From December, 2016 to April, 2017 I collaborated with a PhD student
+					from the University of Michigan on a project to design a delta sigma
+					modulator which runs at 1.3 GHz. I wrote, debugged, and verified Verilog for an ASIC. I used
+					Synopsys VCS to synthesize. A publication is expected by the summer.
 				</div>
 			</div>
 			<div id="laser-arena" class="project">
 				<span class="proj_title" id="rc_car">RC car laser arena game</span>
-				<div class="desc">
+				<div class="short_desc desc">
 					Built an arena-style laser tag style game. Players control
 					RC cars via nintendo 64 controller. Two modes of play: arena
 					and survival.
 				</div>
+				<div class="long_desc desc" hidden>
+						The laser arena was a game designed by myself as well as 3 others. My team designed
+						game that takes place in a 5x10 arena. There are two players. Each player controls a car via
+						a nintendo 64 controller that communicates over XBee. Each car had a SmartFusion SoC on board
+						that communicated with another SmartFusion which acted as a control panel.<br><br>
+						We used a lot of various embedded systems techniques to implement this project, including timers,
+						interrupts, serial communication (XBee, N64), and memory-mapped IO. Code is available upon request. 
+						To see more, watch the video below!
+					<div id="vidme">
+						<iframe src="https://vid.me/e/Gwlp?stats=1" width="422" height="240" frameborder="0" allowfullscreen webkitallowfullscreen mozallowfullscreen scrolling="no"></iframe>
+					</div>		
+					<div id="leshi">
+						<a href="http://www.letv.com/ptv/vplay/27545021.html" style="color: #474645" target="_blank">
+					在中国大陆的用户请点击这里观看视频
+					</a>
+					</div>
+				</div>
 			</div>
 			<div id="dpll" class="project">
 				<span class="proj_title" id="dpll">Digital phase locked-loop for laser</span>
-				<div class="desc">
+				<div class="short_desc desc">
 					Implemented portable digital control electronics required for phase-lock looping a frequency comb.
 				</div>
+				<div class="long_desc desc" hidden>
+					I worked on implementing the digital control electronics for over a year at IMRA America, Inc.
+					I cannot reveal much on the details, but I was able to demonstrate its abilities at the 
+					annual CLEO conference in San Jose, where it received much praise. I was the primary person
+					responsible for this project, and thus implemented front-end interface, back-end, controller, and FPGA code.
+					The below picture is of the IMRA booth at CLEO, which demoed my digital electronics and
+					their optical system.	
+					<br>	
+					<br>
+					<div style="text-align: center;">
+						<img class="about-img" id="imra_booth" src="assets/imra_booth.png">
+						<!--<img class="about-img" id="mobile_comb" src="assets/mobile_comb.PNG">-->
+					</div>
+				</div>				
 			</div>
 			<div id="vocab_tool" class="project">
 				<a style="color: #474645;" target="_blank" href="vocab_tool/index.html"> Vocabulary tool</a>
-				<div class="desc">
+				<div class="short_desc desc">
 					A tool I made for learning words in other languages.
 				</div>
 			</div>
-			<div id="dsm" class="project">
-				<span class="proj_title" id="dsm_title">Delta sigma modulator</span>
-				<div class="desc">
-					Wrote a delta sigma modulator used for an ADC in Verilog.
-				</div>
-			</div>
+
 		</div>
 	</div>
 	<div data-aos="fade-up" id="contact" class="full-height">

@@ -28,21 +28,29 @@
 		
 		$(
 			$(document).on('scroll', function() {
+				var half_screenheight = $(window).height() * 0.5;
 				var scr = $(document).scrollTop();
-				console.log($(document).scrollTop());
-				if (scr > 300) {
+				var about_delta = scr - $('#about').position().top;
+				var proj_delta = scr - $('#projects').position().top;
+				var cont_delta = scr - $('#contact').position().top;
+				console.log('about_delta ' + about_delta);
+				console.log('proj_delta ' + proj_delta);
+				console.log('cont_delta ' + cont_delta);	
+				//console.log($(document).scrollTop());
+				//console.log($('#about').position().top);
+				if (scr > 0.7 * half_screenheight) {
 					navBarTop();
 					$('.tab-btn').css('font-weight', 400);
 					$('.tab-btn').css('border-bottom', 'none');	
-					if (scr > 2000) {
+					if (cont_delta > -half_screenheight * 0.5) {
 						$('#contact-tab').css('font-weight', 700);
 						$('#contact-tab').css('border-bottom', '2px solid #474645');
 					}
-					else if (scr > 1300) {
+					else if (proj_delta > -half_screenheight * 0.5) {
 						$('#proj-tab').css('font-weight', 700);
 						$('#proj-tab').css('border-bottom', '2px solid #474645');				
 					}
-					else if (scr > 400) {
+					else if (about_delta > -half_screenheight * 0.5) {
 						$('#about-tab').css('font-weight', 700);
 						$('#about-tab').css('border-bottom', '2px solid #474645');	
 
@@ -52,6 +60,8 @@
 					navBarLanding();
 				}
 			})
+			
+
 			
 		);
 		
@@ -97,38 +107,36 @@
 	</div>
 	<div data-aos="fade-right" id="projects" class="full-height">
 		<div class="text-section">
-			<div id="project-container">
-				<div id="processor" class="project" style="margin-top: 10px;">
-					N-way superscalar out-of-order processor
-					<div class="desc">
-						Designed an R10K style N-way out of order processor in Verilog.
-					</div>
+			<div id="processor" class="project" style="margin-top: 10px;">
+				<span class="proj_title" id="processor"> N-way superscalar out-of-order processor </span>
+				<div class="desc" style="text-decoration: none">
+					Designed an R10K style N-way out of order processor in Verilog.
 				</div>
-				<div id="laser-arena" class="project">
-					RC car laser arena game
-					<div class="desc">
-						Built an arena-style laser tag style game. Players control
-						RC cars via nintendo 64 controller. Two modes of play: arena
-						and survival.
-					</div>
+			</div>
+			<div id="laser-arena" class="project">
+				<span class="proj_title" id="rc_car">RC car laser arena game</span>
+				<div class="desc">
+					Built an arena-style laser tag style game. Players control
+					RC cars via nintendo 64 controller. Two modes of play: arena
+					and survival.
 				</div>
-				<div id="dpll" class="project">
-					Digital phase locked-loop for laser
-					<div class="desc">
-						Implemented portable digital control electronics required for phase-lock looping a frequency comb.
-					</div>
+			</div>
+			<div id="dpll" class="project">
+				<span class="proj_title" id="dpll">Digital phase locked-loop for laser</span>
+				<div class="desc">
+					Implemented portable digital control electronics required for phase-lock looping a frequency comb.
 				</div>
-				<div id="vocab_tool" class="project">
-					Vocabulary tool
-					<div class="desc">
-						A tool I made for learning words in other languages.
-					</div>
+			</div>
+			<div id="vocab_tool" class="project">
+				<a style="color: #474645;" target="_blank" href="vocab_tool/index.html"> Vocabulary tool</a>
+				<div class="desc">
+					A tool I made for learning words in other languages.
 				</div>
-				<div id="dsm" class="project">
-					Delta sigma modulator
-					<div class="desc">
-						Wrote a delta sigma modulator used for an ADC in Verilog.
-					</div>
+			</div>
+			<div id="dsm" class="project">
+				<span class="proj_title" id="dsm_title">Delta sigma modulator</span>
+				<div class="desc">
+					Wrote a delta sigma modulator used for an ADC in Verilog.
 				</div>
 			</div>
 		</div>

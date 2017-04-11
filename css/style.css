@@ -51,15 +51,22 @@ ul, ol, li {
 	color: #474645;
 }
 
+.proj_title {
+	text-decoration: underline;
+}
+
 .project {
 	text-align: left;
 	font-size: 24px;
 	margin-bottom: 20px;
+	cursor: pointer;
 }
 
 .desc {
+	padding-top: 7px;
 	padding-left: 20px;
 	font-size: 18px;
+	cursor: auto;
 }
 
 #header-bar {

@@ -78,14 +78,15 @@ ul, ol, li {
 	text-align: center; 
 	left: 0;
 	right: 0;
-	-webkit-transition: all 0.2s ease;
-	transition: all 0.2s ease;
 	z-index: 1;
 	position: fixed;
 	background-color: #fbfbfa;
 }
 
-#header-bar.top-bar {
+#header-bar.top-bar {	
+-webkit-transition: all 0.2s ease;
+	transition: all 0.2s ease;
+
 	padding: 10px 0px 0px 10px;
 	top: 0px;
 	max-width: 100vw;

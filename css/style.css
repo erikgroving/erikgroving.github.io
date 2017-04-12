@@ -1,5 +1,6 @@
 * {
 	font-family: pixel;
+
 }
 
 html {
@@ -24,6 +25,14 @@ body {
 ul, ol, li {
     list-style-type: none;
 	margin: 0;
+	padding: 0;
+}
+
+.mobile_tab {
+	margin-top: 4vh;
+	margin-bottom: 4vh;
+	display: block;
+	font-size: 60px;	
 }
 
 #landing {
@@ -77,17 +86,32 @@ ul, ol, li {
 	cursor: auto;
 }
 
-#header-bar {	
+.header-bar {	
 	max-width: 800px;
 	padding-top: 20px;
 	padding-bottom: 20px;
 	top: 40vh;
-	margin: 0 auto;
 	text-align: center; 
+	margin: 0 auto;
 	left: 0;
 	right: 0;
 	z-index: 1;
 	position: fixed;
+	background-color: #fbfbfa;
+}
+
+.header-bar-mobile {
+	max-width: 400px;
+	width: 400px;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	top: 40vh;
+	text-align: center; 
+	margin: 0 auto;
+	left: 0;
+	right: 0;
+	z-index: 1;
+	position: absolute;
 	background-color: #fbfbfa;
 }
 
@@ -96,7 +120,7 @@ ul, ol, li {
 	transition: all 0.2s ease;	
 }
 
-#header-bar.top-bar {	
+.header-bar.top-bar {	
 	-webkit-transition: all 0.2s ease;
 	transition: all 0.2s ease;
 	padding: 10px 0px 0px 10px;
@@ -137,6 +161,8 @@ ul, ol, li {
 }
 
 #back {
+	font-size: 24px;
+	font-family: pixel;
 	position: relative;
 	float: right;
 	cursor: pointer;

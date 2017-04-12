@@ -16,6 +16,7 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<link rel="shortcut icon" type="image/png" href='assets/favicon.png'/>  
 	<link rel="stylesheet" href="css/aos.css" />
+	<link rel="stylesheet" href="css/animate.css">
 	<script src="javascript/aos.js"></script>
 
 
@@ -31,6 +32,11 @@
 		$(function() {
 			if (/Mobi/.test(navigator.userAgent)) {
 				console.log('mobile');
+				$('.tab').addClass('mobile_tab');
+				$('.mobile_tab').removeClass('tab');
+				$('.header-bar').addClass('header-bar-mobile');
+				$('.header-bar-mobile').css('max-width', ($(window).width() * 0.8));
+				$('.header-bar-mobile').removeClass('header-bar');
 			}
 			else {
 				console.log('not mobile');
@@ -54,21 +60,40 @@
 					scrollTop: $(this).offset().top - 0.2 * screenheight
 				}, 300);
 				$(this).children('.short_desc').hide();
+				$(this).children('.long_desc').addClass('animated fadeIn');
 				$(this).children('.long_desc').show();
 				$('#back').show();
+				$('#back').removeClass('fadeOut').addClass('animated fadeIn');
 			});
 			
 			$('#back').on('click', function() {
-				$('.project').show();
-				$('.short_desc').show();
+				$('#back').removeClass('fadeIn').addClass('fadeOut');
+				$('.long_desc').removeClass('animated fadeIn');
 				$('.long_desc').hide();
-				$('#back').hide(); 
+				$('.project').animateCss('fadeIn');
+				$('.project').show();
+				$('.short_desc').addClass('animated fadeIn');				
+				$('.short_desc').show();
+
+				$('.long_desc').hide;
+				$('#back').addClass('animated fadeOut'); 
 			});
 			
 
 
 			
 		});
+		
+		$.fn.extend({
+			animateCss: function (animationName) {
+				var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+				this.addClass('animated ' + animationName).one(animationEnd, function() {
+					$(this).removeClass('animated ' + animationName);
+				});
+			}
+		});
+		
+		
 		function checkScroll() {
 				var half_screenheight = $(window).height() * 0.5;
 				var scr = $(document).scrollTop();
@@ -91,7 +116,6 @@
 					else if (about_delta > -half_screenheight * 0.5) {
 						$('#about-tab').css('font-weight', 700);
 						$('#about-tab').css('border-bottom', '2px solid #474645');	
-
 					}
 				}
 				else {
@@ -102,21 +126,29 @@
 		function navBarLanding() {	
 			var next_pos = $(window).height() * 0.4 - $(document).scrollTop();
 			if (!landing) {
-				$('#header-bar').addClass('transition');
-				$('#header-bar').removeClass('top-bar');
+				$('.header-bar').addClass('transition');
+				$('.header-bar').removeClass('top-bar');					
+				$('.header-bar-mobile').removeClass('fadeOut');
+				$('.header-bar-mobile').addClass('fadeIn animated');
 				setTimeout(function() {
-					$('#header-bar').removeClass('transition');
+					$('.header-bar').removeClass('transition');	
+
+
 				}, 250);
 			}
-			$('#header-bar').css('top', next_pos);
+			$('.header-bar').css('top', next_pos);
 			landing = true;
 		}
 		
 		function navBarTop() {
+			$('.header-bar').css('top', '0px');
+			$('.header-bar').addClass('top-bar');
+			if (landing) {
+				$('.header-bar-mobile').removeClass('fadeIn');
+				$('.header-bar-mobile').addClass('fadeOut animated');			
+			}
 			landing = false;
-			$('#header-bar').css('top', '0px');
-			$('#header-bar').addClass('top-bar');
-			//$('#header-bar').top
+
 		}
 	</script>
 	
@@ -124,7 +156,7 @@
 </head>
 <body>
 	<div id="landing">
-		<div id="header-bar">
+		<div class="header-bar">
 			<ul>
 				<li class="tab">
 					<a id="about-tab" class="tab-btn" href="#about">About</a>
@@ -138,7 +170,7 @@
 			<ul>
 		</div>
 	</div>
-	<div data-aos="fade-left" id="about" class="full-height">
+	<div data-aos="fade-right" id="about" class="full-height">
 		<div  class="text-section">
 			Erik Meade was born in New Jersey and graduated with a BSc in Computer Engineering from
 			the University of Michigan. He is most interested in machine learning. He primarily programs
@@ -225,7 +257,6 @@
 					<br>
 					<div style="text-align: center;">
 						<img class="about-img" id="imra_booth" src="assets/imra_booth.png">
-						<!--<img class="about-img" id="mobile_comb" src="assets/mobile_comb.PNG">-->
 					</div>
 				</div>				
 			</div>

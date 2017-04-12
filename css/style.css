@@ -13,8 +13,11 @@ body {
 	background-color: #f4f3f0;
 	margin: 0;
 	padding: 0;	
-	overflow-x:hidden;
+	overflow-x:hidden;   
+}
 
+body, body * {
+	max-height: 1000000px;
 }
 
 @font-face {
@@ -63,18 +66,19 @@ ul, ol, li {
 	max-width: 1000px;
 	padding-left: 40px;
 	padding-right: 40px;
-	font-size: 24px;
+	font-size: 32px;
 	text-align: center;
 	color: #474645;
 }
 
 .proj_title {
 	text-decoration: underline;
+	font-size: 32px;
 }
 
 .project {
 	text-align: left;
-	font-size: 24px;
+	font-size: 32px;
 	margin-bottom: 20px;
 	cursor: pointer;
 }
@@ -82,7 +86,7 @@ ul, ol, li {
 .desc {
 	padding-top: 7px;
 	padding-left: 20px;
-	font-size: 18px;
+	font-size: 24px;
 	cursor: auto;
 }
 
@@ -161,7 +165,7 @@ ul, ol, li {
 }
 
 #back {
-	font-size: 24px;
+	font-size: 32px;
 	font-family: pixel;
 	position: relative;
 	float: right;

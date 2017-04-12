@@ -31,7 +31,6 @@
 		
 		$(function() {
 			if (/Mobi/.test(navigator.userAgent)) {
-				console.log('mobile');
 				$('.tab').addClass('mobile_tab');
 				$('.mobile_tab').removeClass('tab');
 				$('.header-bar').addClass('header-bar-mobile');
@@ -39,7 +38,6 @@
 				$('.header-bar-mobile').removeClass('header-bar');
 			}
 			else {
-				console.log('not mobile');
 			}
 			checkScroll();
 		});
@@ -51,7 +49,6 @@
 			
 			$(document).on('scroll', function () {
 				checkScroll();
-				console.log('ok');
 			})
 			
 			$('.project').not('#vocab_tool').on('click', function() {

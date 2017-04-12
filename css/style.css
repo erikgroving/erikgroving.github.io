@@ -47,7 +47,7 @@ ul, ol, li {
 
 .full-height {
 	overflow:auto;
-	height: 100vh;
+	min-height: 100vh;
 	width: 100vw;
 
 	text-align: center;
@@ -75,6 +75,7 @@ ul, ol, li {
 	text-decoration: underline;
 	font-size: 32px;
 }
+
 
 .project {
 	text-align: left;
@@ -141,8 +142,8 @@ ul, ol, li {
 	margin-top: 20px;
 }
 #leshi {
-	position: absolute;
-	margin: 0;
+	position: relative;
+	margin-top: 50px;
 	padding: 0;
 	left: 0;
 	right: 0;
